@@ -1,14 +1,14 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
-import {IoIosArrowDown} from'react-icons/io'
+import { IoIosArrowDown } from 'react-icons/io'
 import * as Logo from '../../public/logo.jpg'
 import Image from 'next/image'
 
 
 const products = [
-  { name: 'General', href: '#'},
-  { name: 'Surgical',  href: '#'},
-  { name: 'Cosmetic', href:'#' },
+  { name: 'General', href: '#' },
+  { name: 'Surgical', href: '#' },
+  { name: 'Cosmetic', href: '#' },
 
 ]
 
@@ -22,11 +22,11 @@ export default function Example() {
 
   return (
     <header className="bg-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6  lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image className="h-28 w-28 " src={Logo} alt="" />
+            <Image className=" w-40 " src={Logo} alt="" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -40,14 +40,14 @@ export default function Example() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-10">
-        <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             About
           </a>
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
               Services
-              <IoIosArrowDown className="h-4 w-4 flex-none text-black" aria-hidden="true"/>
-              
+              <IoIosArrowDown className="h-4 w-4 flex-none text-black" aria-hidden="true" />
+
             </Popover.Button>
 
             <Transition
@@ -66,37 +66,37 @@ export default function Example() {
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                     >
-                      
+
                       <div className="flex-auto">
                         <a href={item.href} className="block font-semibold text-gray-900">
                           {item.name}
                           <span className="absolute inset-0" />
                         </a>
-                        
+
                       </div>
                     </div>
                   ))}
                 </div>
-            
+
               </Popover.Panel>
             </Transition>
           </Popover>
 
-          
+
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             New Patients
-            
+
           </a>
-        
-      
+
+
         </Popover.Group>
         <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
           <a href="#" className="text-sm font-semibold leading-6 text-white">
-            Book 
+            Book
             {/* <span aria-hidden="true">&rarr;</span> */}
           </a>
         </button>
-      
+
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
@@ -126,9 +126,9 @@ export default function Example() {
                   {({ open }) => (
                     <>
                       <a
-                          href="#"
-                          className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                            About
+                        href="#"
+                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                        About
                       </a>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                         Services
@@ -152,14 +152,14 @@ export default function Example() {
                     </>
                   )}
                 </Disclosure>
-               
+
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   New Patients
                 </a>
-             
+
               </div>
               <div className="py-6">
                 <a
