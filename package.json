@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "bootstrap": "^5.3.3",
     "next": "13.5.5",
     "react": "^18",
+    "react-bootstrap": "^2.10.5",
     "react-dom": "^18",
     "react-icons": "^4.11.0"
   },

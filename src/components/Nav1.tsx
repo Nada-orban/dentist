@@ -40,7 +40,7 @@ export default function Example() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-10">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
             About
           </a>
           <Popover className="relative">
@@ -83,7 +83,7 @@ export default function Example() {
           </Popover>
 
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
             New Patients
 
           </a>
@@ -91,7 +91,7 @@ export default function Example() {
 
         </Popover.Group>
         <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
-          <a href="#" className="text-sm font-semibold leading-6 text-white">
+          <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
             Book
             {/* <span aria-hidden="true">&rarr;</span> */}
           </a>
@@ -127,7 +127,7 @@ export default function Example() {
                     <>
                       <a
                         href="#"
-                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 no-underline">
                         About
                       </a>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
@@ -143,7 +143,7 @@ export default function Example() {
                             key={item.name}
                             as="a"
                             href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50 no-underline"
                           >
                             {item.name}
                           </Disclosure.Button>
@@ -155,7 +155,7 @@ export default function Example() {
 
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 no-underline"
                 >
                   New Patients
                 </a>
@@ -164,7 +164,7 @@ export default function Example() {
               <div className="py-6">
                 <a
                   href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 no-underline"
                 >
                   Log in
                 </a>

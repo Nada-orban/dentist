@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import '../styles/globals.css'
 import Layout from '@/components/Layout';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   return <>
@@ -21,6 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <meta property="og:image:height" content="2000" />
       {/* <meta name="twitter:image" content="https://singularityaec.com/static/images/logo/logo-blue.png" /> */}
       <link rel="icon" type="image/png" href="/logo.jpg" />
+
       {/* <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
