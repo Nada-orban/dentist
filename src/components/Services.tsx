@@ -21,11 +21,12 @@ function Services() {
         {servicesinfo?.map((service) => {
           return (
             <>
-              <div className="bg-dark text-white overflow-hidden relative " id={`${service.id}`}>
-                <div className=" h-64 overflow-hidden">
-                  <img src={`${service.image}`} alt="Card image" className='h-full w-full  object-cover  border border-black transform transition-transform duration-1000  hover:scale-125 cursor-pointer ' />
+              <div className="bg-dark text-white overflow-hidden relative group cursor-pointer " id={`${service.id}`}>
+                <div className=" h-64 overflow-hidden ">
+                  <img src={`${service.image}`} alt="Card image" className='h-full w-full  object-cover  border border-black transform transition-transform duration-1000  group-hover:scale-125  ' />
                 </div>
-                <div className='absolute bottom-0 left-[5%] text-bold text-2xl'>
+                <div className="absolute inset-0 bg-black bg-opacity-50  "></div>
+                <div className='absolute bottom-0 left-[5%] text-bold text-3xl'>
                   <p>{service.title}</p>
                 </div>
 
