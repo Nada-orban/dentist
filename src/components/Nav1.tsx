@@ -36,66 +36,77 @@ export default function Example() {
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open main menu</span>
-            {/* <Bars3Icon className="h-6 w-6" aria-hidden="true" /> */}
+
           </button>
         </div>
-        <Popover.Group className="hidden lg:flex lg:gap-x-10">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
-            About
-          </a>
-          <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-              Services
-              <IoIosArrowDown className="h-4 w-4 flex-none text-black" aria-hidden="true" />
+        <div>
+          <div className='flex justify-end'>
+            <p className='text-primary-color capitalize'>call us now: <span className='text-black'>01032946286</span></p>
+          </div>
+          <div className='flex'>
+            <Popover.Group className="hidden lg:flex lg:gap-x-10">
 
-            </Popover.Button>
+              <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
+                About
+              </a>
+              <Popover className="relative">
+                <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+                  Services
+                  <IoIosArrowDown className="h-4 w-4 flex-none text-black" aria-hidden="true" />
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
-            >
-              <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-40 max-w-md overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
-                    >
+                </Popover.Button>
 
-                      <div className="flex-auto">
-                        <a href={item.href} className="block font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-40 max-w-md overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-gray-900/5">
+                    <div className="p-4">
+                      {products.map((item) => (
+                        <div
+                          key={item.name}
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                        >
 
-                      </div>
+                          <div className="flex-auto">
+                            <a href={item.href} className="block font-semibold text-gray-900">
+                              {item.name}
+                              <span className="absolute inset-0" />
+                            </a>
+
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
 
-              </Popover.Panel>
-            </Transition>
-          </Popover>
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
 
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
-            New Patients
+              <a href="#" className="text-sm font-semibold leading-6 text-gray-900 no-underline">
+                New Patients
 
-          </a>
+              </a>
 
 
-        </Popover.Group>
-        <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
-          <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
-            Book
-            {/* <span aria-hidden="true">&rarr;</span> */}
-          </a>
-        </button>
+            </Popover.Group>
+            <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
+              <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
+                Book
+                {/* <span aria-hidden="true">&rarr;</span> */}
+              </a>
+            </button>
+
+          </div>
+
+
+        </div>
 
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
