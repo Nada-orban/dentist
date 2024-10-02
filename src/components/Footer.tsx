@@ -3,10 +3,10 @@ import React from 'react';
 export default function Footer() {
   return (
     <footer
-      className="bg-main-color text-center text-neutral-100 dark:bg-neutral-100 dark:text-black lg:text-left mt-5">
+      className="bg-main-color text-center text-neutral-100 dark:bg-neutral-100 dark:text-black lg:text-left mt-5 ">
 
       {/* <!-- Main container div: holds the entire content of the footer, including four sections (TW Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. --> */}
-      <div className="mx-6 py-10 text-center md:text-left">
+      <div className=" py-10 text-center md:text-left container mx-auto">
         <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-2">
           {/* <!-- TW Elements section --> */}
           <div className="border-r border-primary-color ">

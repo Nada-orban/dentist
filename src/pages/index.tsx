@@ -5,6 +5,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import { SetStateAction, useState } from 'react';
 import BigVideo from '../components/BigVideo'
 import Services from '@/components/Services';
+import Landing from '../components/Landing'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,41 +19,42 @@ export default function Home() {
     setIndex(selectedIndex);
   };
   return (
-    <div className='container mx-auto'>
-      <Carousel
-        data-bs-theme="dark"
-        activeIndex={index}
-        onSelect={handleSelect}
-        className="custom-carousel"
-      // prevIcon={<FaArrowLeft style={{ color: '#8DD9FF', fontSize: '2rem' }} />}
-      // nextIcon={<FaArrowRight style={{ color: '#8DD9FF', fontSize: '2rem' }} />} 
-      >
-        {images?.map((slide) => {
-          return (
-            <Carousel.Item className="">
-              <img src={`${slide.image}`} alt="" className=" w-1/2  mx-auto h-[500px] " />
-              {/* <ExampleCarouselImage text="First slide" /> */}
-              <Carousel.Caption className="absolute top-10 right-10 p-2 text-black ">
-                <div className="bg-[#8DD9FF] w-1/2 bg-opacity-20" >{ }</div>
-                {/* <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p> */}
-              </Carousel.Caption>
-            </Carousel.Item>
+    <>
+      <Landing />
+      <div className='container mx-auto relative mt-5'>
+
+        <Carousel
+          data-bs-theme="dark"
+          activeIndex={index}
+          onSelect={handleSelect}
+          className="custom-carousel relative"
+        // prevIcon={<FaArrowLeft style={{ color: '#8DD9FF', fontSize: '2rem' }} />}
+        // nextIcon={<FaArrowRight style={{ color: '#8DD9FF', fontSize: '2rem' }} />} 
+        >
+          {images?.map((slide) => {
+            return (
+              <Carousel.Item className="">
+                <img src={`${slide.image}`} alt="" className=" w-1/2  mx-auto h-[500px] " />
+
+                <Carousel.Caption className="absolute top-10 right-10 p-2 text-black ">
+                  <div className="bg-[#8DD9FF] w-1/2 bg-opacity-20" >{ }</div>
+
+                </Carousel.Caption>
+              </Carousel.Item>
 
 
 
 
-          )
-        })}
+            )
+          })}
 
-      </Carousel>
+        </Carousel>
 
-      {/* <BigVideo /> */}
+
+
+      </div>
       <Services />
-
-
-
-
-    </div>
+    </>
 
   )
 }

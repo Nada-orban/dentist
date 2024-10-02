@@ -16,14 +16,14 @@ const servicesinfo = [
 function Services() {
   return (
     <div className='my-5'>
-      <h1>our <span className='text-primary-color'>services</span></h1>
+      <h1 className='container mx-auto'>our <span className='text-primary-color'>services</span></h1>
       <div className='grid grid-cols-1 md:grid-cols-3 bg-black'>
         {servicesinfo?.map((service) => {
           return (
             <>
               <div className="bg-dark text-white overflow-hidden relative group cursor-pointer " id={`${service.id}`}>
                 <div className=" h-64 overflow-hidden ">
-                  <img src={`${service.image}`} alt="Card image" className='h-full w-full  object-cover  border border-black transform transition-transform duration-1000  group-hover:scale-125  ' />
+                  <img src={`${service.image}`} alt="Card image" className='h-full w-full  object-cover  border border-white transform transition-transform duration-1000  group-hover:scale-125  ' />
                 </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50  "></div>
                 <div className='absolute bottom-0 left-[5%] text-bold text-3xl'>
