@@ -3,6 +3,7 @@ import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { IoIosArrowDown } from 'react-icons/io'
 import * as Logo from '../../public/logo.jpg'
 import Image from 'next/image'
+import { TiThMenuOutline } from "react-icons/ti";
 
 
 
@@ -33,7 +34,7 @@ export default function Example() {
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image className=" w-32 " src={Logo} alt="" />
+            <Image className=" w-20 md:w-32 " src={Logo} alt="" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -46,7 +47,10 @@ export default function Example() {
 
           </button>
         </div>
-        <div>
+        <div className='block md:hidden'>
+          <button>< TiThMenuOutline className="w-7 h-7" /></button>
+        </div>
+        <div className='hidden md:block'>
           <div className='flex justify-end items-center'>
             <p className='text-primary-color capitalize'>call us now: <span className='text-gray-100'>01032946286</span></p>
           </div>

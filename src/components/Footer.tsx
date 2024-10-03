@@ -5,11 +5,11 @@ import { FaFacebookF, FaInstagram } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer
-      className="bg-main-color text-start text-neutral-100 dark:bg-neutral-100 dark:text-black lg:text-left mt-5 ">
+      className="bg-main-color text-start text-neutral-100 dark:bg-neutral-100 dark:text-black lg:text-left mt-5 overflow-hidden ">
 
       {/* <!-- Main container div: holds the entire content of the footer, including four sections (TW Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. --> */}
-      <div className=" py-10 text-start  container mx-auto ">
-        <div className=" grid  md:grid-cols-5 ">
+      <div className=" py-10 text-start  container mx-auto  ">
+        <div className=" grid grid-cols-1  md:grid-cols-5  gap-4 md:gap-0">
           {/* <!-- TW Elements section --> */}
           {/* <div className=" ">
             <h6
@@ -82,7 +82,7 @@ export default function Footer() {
             </div>
             <div>
               <h6
-                className="mb-4 flex justify-start font-semibold uppercase  text-primary-color">
+                className="mb-4 mt-2 flex justify-start font-semibold uppercase  text-primary-color">
                 Social
               </h6>
               <div className='flex gap-2'>
@@ -104,9 +104,9 @@ export default function Footer() {
 
 
           </div>
-          <div className='col-span-2'>
+          <div className='md:col-span-2 text-start'>
             <h6
-              className="mb-4 flex justify-center font-semibold uppercase md:justify-start text-primary-color">
+              className="mb-4 flex justify-start font-semibold uppercase md:justify-start text-primary-color">
               OUR OFFICE
             </h6>
             <div className="mb-4 flex items-start justify-center md:justify-start">
@@ -114,7 +114,7 @@ export default function Footer() {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="mr-3 h-7 w-7">
+                className="mr-3 h-10 w-10 md:h-7 md:w-7">
                 <path
                   d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                 <path
@@ -124,7 +124,7 @@ export default function Footer() {
               <p className='text-start'>21 Museum Street, in front of Al Mahrousa Tourism, second floor,Tanta,Egypt</p>
 
             </div>
-            <p className="mb-4 flex items-center justify-center md:justify-start">
+            <p className="mb-4 flex items-center justify-start md:justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -137,7 +137,7 @@ export default function Footer() {
               </svg>
               info@example.com
             </p>
-            <p className="mb-4 flex items-center justify-center md:justify-start">
+            <p className="mb-4 flex items-center justify-start md:justify-start">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -159,7 +159,7 @@ export default function Footer() {
 
       {/* <!--Copyright section--> */}
       <div className="bg-main-color p-6 text-start dark:bg-neutral-100">
-        <span>Dental Website by:</span>
+        <span>Dental Website by : </span>
         <a
           className="font-semibold text-primary-color dark:text-neutral-400"
           href="https://nadasamir.vercel.app/"
