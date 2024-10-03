@@ -74,9 +74,9 @@ export default function Footer() {
                 <a className="text-white dark:text-neutral-200 no-underline"
                 >
                   <p className='font-bold mb-2'>Monday – Thursday</p>
-                  <p>8am – 5pm</p>
+                  <p className='text-gray-500'>8am – 5pm</p>
                   <p className='font-bold mb-2'>Friday</p>
-                  <p> By appointment</p>
+                  <p className='text-gray-500'> By appointment</p>
                 </a>
               </p>
             </div>
@@ -158,8 +158,8 @@ export default function Footer() {
 
 
       {/* <!--Copyright section--> */}
-      <div className="bg-main-color p-6 text-center dark:bg-neutral-100">
-        <span>© 2024 Copyright:</span>
+      <div className="bg-main-color p-6 text-start dark:bg-neutral-100">
+        <span>Dental Website by:</span>
         <a
           className="font-semibold text-primary-color dark:text-neutral-400"
           href="https://nadasamir.vercel.app/"

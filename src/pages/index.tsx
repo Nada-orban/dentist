@@ -6,6 +6,7 @@ import { SetStateAction, useState } from 'react';
 import BigVideo from '../components/BigVideo'
 import Services from '@/components/Services';
 import Landing from '../components/Landing'
+import Doctors from '@/components/Doctors';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,7 +22,7 @@ export default function Home() {
   return (
     <>
       <Landing />
-      <div className='container mx-auto relative mt-5'>
+      {/* <div className='container mx-auto relative mt-5'>
 
         <Carousel
           data-bs-theme="dark"
@@ -52,7 +53,9 @@ export default function Home() {
 
 
 
-      </div>
+
+      </div> */}
+      <Doctors />
       <Services />
     </>
 

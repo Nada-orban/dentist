@@ -12,6 +12,12 @@ const products = [
   { name: 'Cosmetic', href: '#' },
 
 ]
+const aboutinfo = [
+  { name: 'Contact Us', href: '#' },
+  { name: 'Our Doctors', href: '#' },
+  // { name: 'Cosmetic', href: '#' },
+
+]
 
 
 function classNames(...classes: any[]) {
@@ -47,11 +53,48 @@ export default function Example() {
           <div className='flex items-center'>
             <Popover.Group className="hidden lg:flex lg:gap-x-10">
 
-              <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
-                About
-              </a>
+
               <Popover className="relative">
-                <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-white">
+                <Popover.Button className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
+                  About
+                  <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
+
+                </Popover.Button>
+
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 translate-y-1"
+                >
+                  <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-52 max-w-md overflow-hidden rounded-md bg-main-color shadow-lg ring-1 ring-gray-900/5">
+                    <div className="p-4">
+                      {aboutinfo.map((item) => (
+                        <div
+                          key={item.name}
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-primary-color"
+                        >
+
+                          <div className="flex-auto">
+                            <a href={item.href} className="block font-semibold text-white no-underline">
+                              {item.name}
+                              <span className="absolute inset-0" />
+                            </a>
+
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
+
+              <Popover className="relative">
+                <Popover.Button className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
                   Services
                   <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
 
@@ -71,11 +114,11 @@ export default function Example() {
                       {products.map((item) => (
                         <div
                           key={item.name}
-                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-primary-color"
                         >
 
                           <div className="flex-auto">
-                            <a href={item.href} className="block font-semibold text-white">
+                            <a href={item.href} className="block font-semibold text-white no-underline">
                               {item.name}
                               <span className="absolute inset-0" />
                             </a>
@@ -90,7 +133,7 @@ export default function Example() {
               </Popover>
 
 
-              <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
+              <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
                 New Patients
 
               </a>
@@ -98,7 +141,7 @@ export default function Example() {
 
             </Popover.Group>
             <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
-              <a href="#" className="text-sm font-semibold leading-6 text-white no-underline">
+              <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
                 Book
                 {/* <span aria-hidden="true">&rarr;</span> */}
               </a>
@@ -155,7 +198,7 @@ export default function Example() {
                             key={item.name}
                             as="a"
                             href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
+                            className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
                           >
                             {item.name}
                           </Disclosure.Button>

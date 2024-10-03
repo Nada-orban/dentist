@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts"],
+  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts", "src/components/Doctors.tsx"],
   "exclude": ["node_modules"]
 }
