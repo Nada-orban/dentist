@@ -5,7 +5,7 @@ import { FaFacebookF, FaInstagram } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer
-      className="bg-main-color text-start text-neutral-100 dark:bg-neutral-100 dark:text-black lg:text-left mt-5 overflow-hidden ">
+      className="bg-main-color text-start text-neutral-100  lg:text-left mt-5 overflow-hidden ">
 
       {/* <!-- Main container div: holds the entire content of the footer, including four sections (TW Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. --> */}
       <div className=" py-10 text-start  container mx-auto  ">
