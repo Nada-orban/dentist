@@ -158,7 +158,7 @@ export default function Footer() {
 
 
       {/* <!--Copyright section--> */}
-      <div className="bg-main-color p-6 text-start dark:bg-neutral-100">
+      <div className="bg-main-color p-6 text-start ">
         <span>Dental Website by : </span>
         <a
           className="font-semibold text-primary-color dark:text-neutral-400"
