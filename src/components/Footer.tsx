@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { IoHome } from "react-icons/io5";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
@@ -70,15 +71,15 @@ export default function Footer() {
                 className="mb-4 flex justify-start font-semibold uppercase  text-primary-color">
                 Hours
               </h6>
-              <p className="mb-4">
-                <a className="text-white dark:text-neutral-200 no-underline"
+              <div className="mb-4">
+                <div className="text-white dark:text-neutral-200 no-underline"
                 >
                   <p className='font-bold mb-2'>Monday – Thursday</p>
                   <p className='text-gray-500'>8am – 5pm</p>
                   <p className='font-bold mb-2'>Friday</p>
                   <p className='text-gray-500'> By appointment</p>
-                </a>
-              </p>
+                </div>
+              </div>
             </div>
             <div>
               <h6

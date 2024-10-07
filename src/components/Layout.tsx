@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Nav from './Nav1'
 import Footer from './Footer'

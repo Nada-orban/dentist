@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import doctor from '../../public/images/Doctors/file.png'
 const doctors = [{

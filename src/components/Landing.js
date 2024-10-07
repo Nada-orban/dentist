@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { FaPhoneAlt, FaArrowRight } from "react-icons/fa";
 

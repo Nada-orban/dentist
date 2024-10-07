@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.17",
+    "@headlessui/react": "^2.1.9",
     "bootstrap": "^5.3.3",
     "next": "13.5.5",
     "next-videos": "1.4.1",

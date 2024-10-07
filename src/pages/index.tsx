@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import Nav1 from '../components/Nav1'
@@ -7,6 +8,7 @@ import BigVideo from '../components/BigVideo'
 import Services from '@/components/Services';
 import Landing from '../components/Landing'
 import Doctors from '@/components/Doctors';
+import Feedback from '@/components/Feedback';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -57,6 +59,7 @@ export default function Home() {
       </div> */}
       <Doctors />
       <Services />
+      <Feedback />
     </>
 
   )

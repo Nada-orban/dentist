@@ -1,9 +1,11 @@
+'use client'
 import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { IoIosArrowDown } from 'react-icons/io'
 import * as Logo from '../../public/logo.jpg'
 import Image from 'next/image'
 import { TiThMenuOutline } from "react-icons/ti";
+import Link from "next/link";
 
 
 
@@ -144,11 +146,11 @@ export default function Example() {
 
 
             </Popover.Group>
-            <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7">
-              <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
+            <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7 hover:bg-dark-primary-color">
+              <Link href="/booking" className="text-md font-semibold leading-6 text-white no-underline">
                 Book
                 {/* <span aria-hidden="true">&rarr;</span> */}
-              </a>
+              </Link>
             </button>
 
           </div>
