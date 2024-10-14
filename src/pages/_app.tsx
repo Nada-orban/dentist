@@ -4,6 +4,9 @@ import Head from 'next/head';
 import '../styles/globals.css'
 import Layout from '@/components/Layout';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 export default function App({ Component, pageProps }: AppProps) {
   return <>
