@@ -1,39 +1,31 @@
-'use client'
-import React from 'react'
+"use client";
+import React from "react";
 // import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 // import Tab from 'react-bootstrap/Tab';
 // import Tabs from 'react-bootstrap/Tabs';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import Dropdown from "react-bootstrap/Dropdown";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { IoIosArrowDown } from "react-icons/io";
 
-
-const patientInfo = [{
-  id: "1",
-  title: "New Patient",
-  services: [
-    { service1: "veneer" },
-    { service1: "filling" }
-  ],
-},
-{
-  id: "2",
-  title: "Existing Patient",
-  services: [
-    { service1: "veneer" },
-    { service1: "filling" }
-  ],
-
-
-}]
-
+const patientInfo = [
+  {
+    id: "1",
+    title: "New Patient",
+    services: [{ service1: "filling" }],
+  },
+  {
+    id: "2",
+    title: "Existing Patient",
+    services: [{ service1: "veneer" }, { service1: "filling" }],
+  },
+];
 
 function index() {
   return (
-    <div className='mt-36 '>
-      <h1 className='text-bold text-center'>Book an Appointment</h1>
-      <div className='flex items-center justify-center flex-col md:flex-row '>
+    <div className="mt-36 ">
+      <h1 className="text-bold text-center">Book an Appointment</h1>
+      <div className="flex items-center justify-center flex-col md:flex-row ">
         <div>
           <TabGroup>
             <TabList className="mb-3 rounded-full border border-black w-fit">
@@ -45,51 +37,40 @@ function index() {
                   >
                     {patient.title}
                   </Tab>
-                )
+                );
               })}
-
             </TabList>
             <TabPanels>
               {patientInfo?.map((patient) => {
                 return (
-                  <TabPanel >
-                    <div className='flex flex-col gap-2'>
-                      <Menu >
-                        <MenuButton className="rounded-full border border-black p-2 flex items-center justify-between" >Please Select a Service  <IoIosArrowDown /></MenuButton>
-                        <MenuItems transition
+                  <TabPanel>
+                    <div className="flex flex-col gap-2">
+                      <Menu>
+                        <MenuButton className="rounded-full border border-black p-2 flex items-center justify-between">
+                          Please Select a Service <IoIosArrowDown />
+                        </MenuButton>
+                        <MenuItems
+                          transition
                           anchor="bottom end"
-                          className="w-64 origin-top-right rounded-xl border border-black bg-white p-1 text-sm/6 text-black transition duration-100 ease-in-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0">
+                          className="w-64 origin-top-right rounded-xl border border-black bg-white p-1 text-sm/6 text-black transition duration-100 ease-in-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                        >
                           {patient.services?.map((service) => {
                             return (
                               <MenuItem>
-                                <p className="block data-[focus]:bg-blue-100 k" >
+                                <p className="block data-[focus]:bg-blue-100 k">
                                   {service.service1}
                                 </p>
                               </MenuItem>
-
-                            )
-
+                            );
                           })}
-
-
                         </MenuItems>
                       </Menu>
-                      <input type='date' className='rounded-full' />
-                      <input type='time' className='rounded-full' />
-
-
-
-
-
-
+                      <input type="date" className="rounded-full" />
+                      <input type="time" className="rounded-full" />
                     </div>
                   </TabPanel>
-
-                )
+                );
               })}
-
-
-
             </TabPanels>
           </TabGroup>
           {/* <Tabs
@@ -137,17 +118,12 @@ function index() {
               </Dropdown>
             </Tab>
           </Tabs> */}
-
         </div>
 
         <div></div>
       </div>
-
-
-
-    </div >
-
-  )
+    </div>
+  );
 }
 
-export default index
+export default index;

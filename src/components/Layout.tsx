@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Fragment } from 'react'
 import Nav from './Nav1'
 import Footer from './Footer'
 import { Merriweather } from 'next/font/google'
@@ -16,14 +16,16 @@ function Layout(props: any, {
   children: React.ReactNode
 }) {
   return (
+
     <div className={Roboto.className}>
       <header>
         <Nav />
       </header>
-      <main>{props.children}</main>
+      <main >{props.children}</main>
       <footer><Footer /></footer>
 
     </div>
+
   )
 }
 

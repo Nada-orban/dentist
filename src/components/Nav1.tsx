@@ -150,6 +150,11 @@ export default function Example() {
                 New Patients
 
               </a>
+              <a href="/register/signUp" className="text-md font-semibold leading-6 text-white no-underline">
+                Log In
+
+              </a>
+
 
 
             </PopoverGroup>
