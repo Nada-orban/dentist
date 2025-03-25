@@ -4,8 +4,8 @@ import axios from "axios";
 import Link from "next/link";
 
 const domain = `${API_URL}`;
-const signupUrl = `${domain}/register/api/signup/`;
-const logoutUrl = `${domain}/register/api/logout/`;
+const signupUrl = `${domain}/api/register/signup/`;
+const logoutUrl = `${domain}/api/register/logout/`;
 
 function signUp() {
   const [signUpStatus, setSignUpStatus] = useState("");
@@ -23,12 +23,15 @@ function signUp() {
   const handleChange = (e) => {
     setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
   };
+  console.log(signUpData);
 
-  const submitSignupForm = () => {
+  const submitSignupForm = (e) => {
+    e.preventDefault();
     if (
-      signUpData.first_name != 0 &&
-      signUpData.last_name != 0 &&
-      signUpData.password
+      signUpData.username.trim() &&
+      signUpData.password.trim() &&
+      signUpData.first_name.trim() &&
+      signUpData.last_name.trim()
     ) {
       const contantFormData = new FormData();
       contantFormData.append("username", signUpData.username);
@@ -42,17 +45,21 @@ function signUp() {
       //   "confirmed_password",
       //   signUpData.confirmed_password
       // );
-      const reloadPageAndNavigate = () => {
-        window.location.reload();
-      };
+      // const reloadPageAndNavigate = () => {
+      //   window.location.reload();
+      // };
 
       axios
-        .post(signupUrl, contantFormData)
-        .then((res) => {
-          localStorage.setItem("Token", `Token ${res.data.token}`);
-          reloadPageAndNavigate();
+        .post(signupUrl, contantFormData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
         })
+        .then((res) =>
+          localStorage.setItem("Token1", `Token ${res.data.token}`)
+        )
         .catch((e) => {
+          console.error("Signup error", e.response?.data || e.message);
           setSignUpStatus("error");
         });
     }

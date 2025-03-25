@@ -10,7 +10,7 @@ export default function Document() {
         <link rel="icon" href="/chart.jpg" />
         <meta property="og:image" content="/chart.jpg" />
 
-        <link href="/dist/output.css" rel="stylesheet" />
+        {/* <link href="/dist/output.css" rel="stylesheet" /> */}
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
           rel="stylesheet"

@@ -4,42 +4,30 @@ import axios from "axios";
 import Link from "next/link";
 
 const domain = `${API_URL}`;
-const signinUrl = `${domain}/register/api/signin/`;
-const logoutUrl = `${domain}/register/api/logout/`;
+const signinUrl = `${domain}/api/register/signin/`;
+const logoutUrl = `${domain}/api/register/logout/`;
 
 function signIn() {
-  const [signIn, setSignIn] = useState({ username: "", password: "" });
+  const [signInStatus, setSignInStatus] = useState("");
+  const [signInData, setSignInData] = useState({ username: "", password: "" });
 
   const handleChange = (e) => {
-    setSignIn({ ...signIn, [e.target.name]: e.target.value });
+    setSignInData({ ...signInData, [e.target.name]: e.target.value });
   };
-
+  // console.log("signInData", signInData);
   const submitSigninForm = () => {
-    if (
-      signUpData.first_name != 0 &&
-      signUpData.last_name != 0 &&
-      signUpData.password &&
-      signUpData.confirmed_password
-    ) {
+    if (signInData.username && signInData.password) {
       const contantFormData = new FormData();
-      contantFormData.append("username", signUpData.username);
-      contantFormData.append("password", signUpData.password);
-      contantFormData.append(
-        "confirmed_password",
-        signUpData.confirmed_password
-      );
-      const reloadPageAndNavigate = () => {
-        window.location.reload();
-      };
+      contantFormData.append("username", signInData.username);
+      contantFormData.append("password", signInData.password);
 
       axios
         .post(signinUrl, contantFormData)
         .then((res) => {
-          localStorage.setItem("Token", `Token ${res.data.token}`);
-          reloadPageAndNavigate();
+          localStorage.setItem("Token1", `Token ${res.data.token}`);
         })
         .catch((e) => {
-          setSignUpStatus("error");
+          setSignInStatus("error");
         });
     }
   };

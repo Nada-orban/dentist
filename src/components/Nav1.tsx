@@ -17,7 +17,7 @@ const products = [
 
 ]
 const aboutinfo = [
-  { name: 'Contact Us', href: '#' },
+  // { name: 'Contact Us', href: '#' },
   { name: 'Our Doctors', href: '/doctors' },
   // { name: 'Cosmetic', href: '#' },
 
@@ -63,11 +63,15 @@ export default function Example() {
           <div className='flex justify-end items-center'>
             <p className='text-primary-color capitalize'>call us now: <span className='text-gray-100'>01032946286</span></p>
           </div>
-          <div className='flex items-center'>
+          <div className='flex items-center '>
+
             <PopoverGroup className="hidden lg:flex lg:gap-x-10">
 
+              <a href="" className="text-md font-semibold leading-6 text-white no-underline">
+                About
 
-              <Popover className="relative">
+              </a>
+              {/* <Popover className="relative">
                 <PopoverButton className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
                   About
                   <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
@@ -104,7 +108,7 @@ export default function Example() {
 
                   </PopoverPanel>
                 </Transition>
-              </Popover>
+              </Popover> */}
 
               <Popover className="relative">
                 <PopoverButton className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
@@ -146,11 +150,21 @@ export default function Example() {
               </Popover>
 
 
-              <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
+              {/* <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
                 New Patients
 
+                
+              </a> */}
+              <a href="" className="text-md font-semibold leading-6 text-white no-underline">
+                Our Doctors
+
               </a>
-              <a href="/register/signUp" className="text-md font-semibold leading-6 text-white no-underline">
+              <a href="/contact" className="text-md font-semibold leading-6 text-white no-underline">
+                Contact Us
+
+              </a>
+
+              <a href="/register/signIn" className="text-md font-semibold leading-6 text-white no-underline">
                 Log In
 
               </a>
@@ -158,9 +172,9 @@ export default function Example() {
 
 
             </PopoverGroup>
-            <button className="hidden lg:flex  lg:justify-center bg-[#C5B069] w-28 h-10 px-4 py-2 rounded-full ms-7 hover:bg-dark-primary-color">
+            <button className="hidden btn1 btn-primary1 ms-7">
               <Link href="/booking" className="text-md font-semibold leading-6 text-white no-underline">
-                Book
+                Book Online
                 {/* <span aria-hidden="true">&rarr;</span> */}
               </Link>
             </button>
