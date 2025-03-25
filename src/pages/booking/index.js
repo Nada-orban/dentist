@@ -48,38 +48,34 @@ function index() {
   });
 
   useEffect(async () => {
-    const res = await fetch(
-      "http://127.0.0.1:8000/api/reservation/appointments/"
-    );
-    const data = await res.json();
-    console.log(data);
-    // const fetchReservations = async () => {
-    //   try {
-    //     const response = await axios.get(getReservstionUrl, {
-    //       headers: {
-    //         Authorization: `Token 91d786e3fd8b9b4ab2f67e62e1fb06ce505a872c`,
-    //       },
-    //     });
+    const fetchReservations = async () => {
+      try {
+        const response = await axios.get(getReservstionUrl, {
+          headers: {
+            Authorization: localStorage.getItem("Token1"),
+          },
+        });
 
-    //     console.log("API Response:", response.data);
-    //     setReservationsData(response.data); // ✅ Correctly set the response data
-    //   } catch (error) {
-    //     console.error(
-    //       "Error fetching reservations:",
-    //       error.response ? error.response.data : error.message
-    //     );
-    //   }
-    // };
+        console.log("API Response:", response.data);
+        setReservationsData(response.data); // ✅ Correctly set the response data
+      } catch (error) {
+        console.error(
+          "Error fetching reservations:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
 
-    // fetchReservations();
+    fetchReservations();
   }, []);
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    console.log("Form data:", values);
     try {
       // Send data to backend
       const response = await axios.post(`${createReservstionUrl}`, values, {
-        headers: { Authorization: localStorage.getItem("Token") },
+        headers: { Authorization: localStorage.getItem("Token1") },
       });
       console.log("Appointment booked successfully:", response.data);
       alert("Appointment booked successfully!");

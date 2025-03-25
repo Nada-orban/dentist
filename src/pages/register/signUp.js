@@ -9,6 +9,7 @@ const logoutUrl = `${domain}/api/register/logout/`;
 
 function signUp() {
   const [signUpStatus, setSignUpStatus] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [signUpData, setSignUpData] = useState({
     first_name: "",
     last_name: "",
@@ -61,6 +62,11 @@ function signUp() {
         .catch((e) => {
           console.error("Signup error", e.response?.data || e.message);
           setSignUpStatus("error");
+          if (e.response && e.response.data && e.response.data.error) {
+            setErrorMessage(e.response.data.error);
+          } else {
+            setErrorMessage("An unexpected error occurred. Please try again.");
+          }
         });
     }
   };
@@ -71,7 +77,7 @@ function signUp() {
         <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">
           Sign Up
         </h2>
-
+        <p className="text-red-500">{errorMessage}</p>
         <form onSubmit={submitSignupForm} className="space-y-4">
           <input
             type="text"

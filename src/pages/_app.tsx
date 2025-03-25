@@ -7,8 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { useRouter } from "next/router";
+import Nav from '@/components/Nav1';
+import Footer from '@/components/Footer';
+
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const hideLayout = router.pathname.startsWith("/dashboard");
   return <>
     <Head>
       <meta property="og:title" content="Singularity" />
@@ -45,9 +51,9 @@ export default function App({ Component, pageProps }: AppProps) {
         }}
       /> */}
     </Head>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    {!hideLayout && <Nav />}
+    <Component {...pageProps} />
+    {!hideLayout && <Footer />}
 
   </>
 }
