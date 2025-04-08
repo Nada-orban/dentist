@@ -47,27 +47,27 @@ function index() {
     // reason: Yup.string().min(10, "Please provide more details"),
   });
 
-  useEffect(async () => {
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get(getReservstionUrl, {
-          headers: {
-            Authorization: localStorage.getItem("Token1"),
-          },
-        });
+  // useEffect(async () => {
+  //   const fetchReservations = async () => {
+  //     try {
+  //       const response = await axios.get(getReservstionUrl, {
+  //         headers: {
+  //           Authorization: localStorage.getItem("Token1"),
+  //         },
+  //       });
 
-        console.log("API Response:", response.data);
-        setReservationsData(response.data); // ✅ Correctly set the response data
-      } catch (error) {
-        console.error(
-          "Error fetching reservations:",
-          error.response ? error.response.data : error.message
-        );
-      }
-    };
+  //       console.log("API Response:", response.data);
+  //       setReservationsData(response.data); // ✅ Correctly set the response data
+  //     } catch (error) {
+  //       console.error(
+  //         "Error fetching reservations:",
+  //         error.response ? error.response.data : error.message
+  //       );
+  //     }
+  //   };
 
-    fetchReservations();
-  }, []);
+  //   fetchReservations();
+  // }, []);
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -113,7 +113,7 @@ function index() {
                       <div className="flex flex-col gap-2 mx-10   ">
                         <Formik
                           initialValues={{
-                            fullName: "",
+                            full_name: "",
                             email: "",
                             phone: "",
                             appointment_date: "",

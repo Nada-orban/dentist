@@ -17,7 +17,7 @@ const servicesinfo = [
 function Services() {
   return (
     <div className='my-5'>
-      <h1 className='container mx-auto'>Our <span className='text-primary-color'>Services</span></h1>
+      <h1 className='container mx-aut font-bold'>Our <span className='text-primary-color'>Services</span></h1>
       <div className='grid grid-cols-1 md:grid-cols-3 bg-black'>
         {servicesinfo?.map((service) => {
           return (

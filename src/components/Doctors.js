@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import API_URL from "../api/config";
+// import doctor from "../../public/images/Doctors/file.png";
+import API_URL from "../pages/api/config";
 import axios, { all } from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -10,10 +11,6 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { IoMdAdd } from "react-icons/io";
-import { FaTrashAlt } from "react-icons/fa";
-import { MdModeEdit } from "react-icons/md";
-import AddDoctor from "../../components/addDoctor";
 
 const domain = `${API_URL}`;
 const getDoctorsUrl = `${domain}/api/doctors/`;
@@ -73,31 +70,14 @@ function Doctors() {
     };
 
     fetchAllDoctors();
-  }, []);
+  }, [allDoctors]);
 
   return (
     <div className="bg-white my-3 py-4">
-      <div className="container mx-auto py-12 ">
-        <div className="flex justify-between items-center">
-          <h1 className="font-bold my-5">
-            Meet Our <span className="text-primary-color">Doctors</span>
-          </h1>
-          <div className="flex justify-end items-center gap-1">
-            <button
-              className="  btn-primary1 p-1"
-              onClick={() => setIsOpen(true)}
-            >
-              <IoMdAdd style={{ width: "20px", color: "white" }} />
-            </button>
-            <button className="  btn-primary1 p-1">
-              <MdModeEdit style={{ width: "20px", color: "white" }} />
-            </button>
-            <button className="  btn-primary1 p-1">
-              <FaTrashAlt style={{ width: "20px", color: "white" }} />
-            </button>
-          </div>
-        </div>
-
+      <div className="container mx-auto ">
+        <h1 className="font-bold my-5">
+          Meet Our <span className="text-primary-color">Doctors</span>
+        </h1>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-4 md:mx-auto ">
           {allDoctors?.map((doctor) => {
             return (
@@ -116,13 +96,6 @@ function Doctors() {
           })}
         </div>
       </div>
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="relative z-50 overflow-y-auto"
-      >
-        <AddDoctor />
-      </Dialog>
     </div>
   );
 }

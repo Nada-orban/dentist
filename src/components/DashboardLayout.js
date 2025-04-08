@@ -1,6 +1,11 @@
 // components/DashboardLayout.js
 import React from "react";
 import Link from "next/link";
+import API_URL from "../pages/api/config";
+import axios from "axios";
+
+const domain = `${API_URL}`;
+const logoutUrl = `${domain}/api/register/logout/`;
 
 const DashboardLayout = ({ children }) => {
   return (

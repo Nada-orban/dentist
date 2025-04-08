@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 .btn1 {
-  @apply lg:flex  lg:justify-center   h-10 px-4 py-2 rounded-lg   text-white;
+  @apply lg:flex  lg:justify-center   h-10 px-4 py-2   text-white;
 }
 .btn-primary1 {
-  @apply bg-[#C5B069] hover:bg-dark-primary-color;
+  @apply bg-[#C5B069] hover:bg-dark-primary-color rounded-lg;
+}
+.flexInfoBox {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4 mt-6;
+}
+.infobBox {
+  @apply bg-white  shadow-md  rounded-lg  p-4;
 }
 
 :root {

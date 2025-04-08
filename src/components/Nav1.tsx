@@ -155,7 +155,7 @@ export default function Example() {
 
                 
               </a> */}
-              <a href="" className="text-md font-semibold leading-6 text-white no-underline">
+              <a href="/doctors" className="text-md font-semibold leading-6 text-white no-underline">
                 Our Doctors
 
               </a>
