@@ -21,33 +21,6 @@ const addDoctorUrl = `${domain}/api/doctors/create/`;
 const editDoctorUrl = `${domain}/api/doctors/`;
 const deleteDoctorUrl = `${domain}/api/doctors/`;
 
-const doctors = [
-  {
-    id: 1,
-    image: "/images/Doctors/doctor1.png",
-    title: "Dr.Mostafa El-Masry",
-    description: "Cosmetic and dental implant specialist",
-  },
-  {
-    id: 2,
-    image: "/images/Doctors/doctor2.png",
-    title: "Dr.Ali Gibreel",
-    description: "Cosmetic fillings specialist",
-  },
-  {
-    id: 3,
-    image: "/images/Doctors/doctor3.png",
-    title: "Dr.Mohamed El-Maghrby",
-    description: "Orthodontist and Pediatric dentistry",
-  },
-  {
-    id: 4,
-    image: "/images/Doctors/doctor4.png",
-    title: "Dr.Abd Elrahman El-Abd ",
-    description: "Endodontist",
-  },
-];
-
 function Doctors() {
   const [allDoctors, setAllDoctors] = React.useState([]);
   const [singleDoctor, setSingleDoctor] = React.useState("");
@@ -89,27 +62,35 @@ function Doctors() {
             >
               <IoMdAdd style={{ width: "20px", color: "white" }} />
             </button>
-            <button className="  btn-primary1 p-1">
-              <MdModeEdit style={{ width: "20px", color: "white" }} />
-            </button>
-            <button className="  btn-primary1 p-1">
-              <FaTrashAlt style={{ width: "20px", color: "white" }} />
-            </button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-4 md:mx-auto ">
           {allDoctors?.map((doctor) => {
             return (
-              <div>
-                <img
-                  src={`${doctor.profile_image}`}
-                  alt=""
-                  className="rounded-md h-[333px] "
-                />
-                <div className="mt-3">
-                  <h3 className="font-bold">{doctor.full_name}</h3>
-                  <p className="text-gray-500">{doctor.bio}</p>
+              <div className="flex justify-between items-center ">
+                <div>
+                  <img
+                    src={doctor.profile_image}
+                    // doctor.profile_image?.startsWith("http")
+                    //   ? doctor.profile_image
+                    //   : `http://localhost:8000${doctor.profile_image}`
+
+                    alt=""
+                    className="rounded-md h-[333px] "
+                  />
+                  <div className="mt-3">
+                    <h3 className="font-bold">{doctor.full_name}</h3>
+                    <p className="text-gray-500">{doctor.bio}</p>
+                  </div>
+                </div>
+                <div>
+                  <button className="  btn-primary1 p-1">
+                    <MdModeEdit style={{ width: "20px", color: "white" }} />
+                  </button>
+                  <button className="  btn-primary1 p-1">
+                    <FaTrashAlt style={{ width: "20px", color: "white" }} />
+                  </button>
                 </div>
               </div>
             );

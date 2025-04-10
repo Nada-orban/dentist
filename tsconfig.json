@@ -17,6 +17,15 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["video.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx", "global.d.ts", "src/components/Doctors.js", "src/components/Feedback.tsx", "src/pages/index.js"],
+  "include": [
+    "video.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "global.d.ts",
+    "src/components/Doctors.js",
+    "src/components/Feedback.tsx",
+    "src/pages/index.js"
+  ],
   "exclude": ["node_modules"]
 }
