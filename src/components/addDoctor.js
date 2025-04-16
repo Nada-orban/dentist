@@ -84,7 +84,7 @@ function addDoctor() {
           },
         })
         .then((res) => console.log(res));
-      // window.location.reload();
+      window.location.reload();
     } catch (err) {
       if (err.response) {
         console.group("🛑 500 Response");

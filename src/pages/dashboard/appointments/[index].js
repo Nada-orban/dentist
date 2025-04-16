@@ -14,6 +14,9 @@ function Appointment() {
   const { reservationId } = router.query;
   const [reservation_Id, setReservation_Id] = useState("");
   const [reservationData, setReservationData] = useState("");
+  const [editreservationData, setEditReservationData] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
 
   // useEffect(() => {
   //   if (reservationId) {
@@ -43,6 +46,27 @@ function Appointment() {
       );
     }
   }, [reservationId]);
+
+  useEffect(() => {
+    if (reservationData) {
+      setEditReservationData({
+        full_name: reservationData.full_name,
+        phone: reservationData.phone,
+        age: reservationData.age,
+        appointment_date: reservationData.appointment_date,
+        appointment_time: reservationData.appointment_time,
+        email: reservationData.email,
+        number_of_phases: reservationData.number_of_phases,
+        message: reservationData.message,
+      });
+    }
+  }, [reservationData]);
+
+  const handleEdit = () => {
+
+  };
+
+ 
   return (
     <DashboardLayout>
       <div
@@ -52,43 +76,117 @@ function Appointment() {
         <div className="w-3/4">
           <div className=" flexInfoBox">
             <div className="text-md md:text-lg font-semibold">Name:</div>
-            <div className="infobBox">{reservationData?.full_name}</div>
+            {editMode ? (
+              <input
+                type="text"
+                value={editreservationData?.full_name}
+                onChange={(e) =>
+                  setEditReservationData({
+                    ...editreservationData,
+                    full_name: e.target.value,
+                  })
+                }
+                className="border p-2 rounded-md w-full"
+              />
+            ) : (
+              <div className="infobBox">{reservationData?.full_name}</div>
+            )}
           </div>
           <div className="flexInfoBox">
             <div className="text-md md:text-lg font-semibold">Age:</div>
-            <div className="infobBox">{reservationData?.age}</div>
+            {editMode ? (
+              <input
+                type="text"
+                value={editreservationData?.age}
+                onChange={(e) =>
+                  setEditReservationData({
+                    ...editreservationData,
+                    age: e.target.value,
+                  })
+                }
+                className="border p-2 rounded-md w-full"
+              />
+            ) : (
+              <div className="infobBox">{reservationData?.age}</div>
+            )}
           </div>
           <div className="flexInfoBox">
             <div className="text-md md:text-lg font-semibold">
               Appointment date:
             </div>
-            <div className="infobBox">{reservationData?.appointment_date}</div>
+            {editMode ? (
+              <input
+                type="date"
+                value={editreservationData?.appointment_date}
+                onChange={(e) =>
+                  setEditReservationData({
+                    ...editreservationData,
+                    appointment_date: e.target.value,
+                  })
+                }
+                className="border p-2 rounded-md w-full"
+              />
+            ) : (
+              <div className="infobBox">
+                {reservationData?.appointment_date}
+              </div>
+            )}
           </div>
           <div className="flexInfoBox">
             <div className="text-md md:text-lg font-semibold">
               Appointment time:
             </div>
-            <div className="infobBox">{reservationData?.appointment_time}</div>
+            {editMode ? (
+              <input
+                type="time"
+                value={editreservationData?.appointment_time}
+                onChange={(e) =>
+                  setEditReservationData({
+                    ...editreservationData,
+                    appointment_time: e.target.value,
+                  })
+                }
+                className="border p-2 rounded-md w-full"
+              />
+            ) : (
+              <div className="infobBox">
+                {reservationData?.appointment_time}
+              </div>
+            )}
           </div>
 
           <div className="flexInfoBox">
             <div className="text-md md:text-lg font-semibold">Message:</div>
-            <div className="infobBox">{reservationData?.message}</div>
+            {editMode ? (
+              <input
+                type="text"
+                value={editreservationData?.message}
+                onChange={(e) =>
+                  setEditReservationData({
+                    ...editreservationData,
+                    message: e.target.value,
+                  })
+                }
+                className="border p-2 rounded-md w-full"
+              />
+            ) : (
+              <div className="infobBox">{reservationData?.message}</div>
+            )}
           </div>
         </div>
         <div className="flex items-center justify-end gap-1">
-          <button>
+          <button onClick={handleEdit}>
             <MdModeEdit
               style={{ width: "20px" }}
               className="hover:text-primary-color"
             />
           </button>
-          <button>
+          {/* <button onClick={() => handleDeleteClick(reservationId)}>
             <FaTrashAlt
               style={{ width: "20px" }}
               className="hover:text-red-500"
             />
-          </button>
+          </button> */}
         </div>
       </div>
     </DashboardLayout>
