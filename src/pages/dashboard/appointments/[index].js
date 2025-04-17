@@ -14,7 +14,7 @@ function Appointment() {
   const { reservationId } = router.query;
   const [reservation_Id, setReservation_Id] = useState("");
   const [reservationData, setReservationData] = useState("");
-  const [editreservationData, setEditReservationData] = useState("");
+  const [editReservationData, setEditReservationData] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
 
@@ -56,17 +56,31 @@ function Appointment() {
         appointment_date: reservationData.appointment_date,
         appointment_time: reservationData.appointment_time,
         email: reservationData.email,
-        number_of_phases: reservationData.number_of_phases,
         message: reservationData.message,
       });
     }
   }, [reservationData]);
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
+    console.log("editReservationData", editReservationData);
+    try {
+      const response = await axios.patch(
+        `${singleReservstionUrl}${reservationId}/`,
+        editReservationData,
+        {
+          headers: { Authorization: localStorage.getItem("Token1") },
+        }
+      );
 
+      setEditReservationData(response.data);
+      setEditMode(false);
+    } catch (error) {
+      console.error(
+        "Error updating reservation:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
-
- 
   return (
     <DashboardLayout>
       <div
@@ -79,10 +93,10 @@ function Appointment() {
             {editMode ? (
               <input
                 type="text"
-                value={editreservationData?.full_name}
+                value={editReservationData?.full_name}
                 onChange={(e) =>
                   setEditReservationData({
-                    ...editreservationData,
+                    ...editReservationData,
                     full_name: e.target.value,
                   })
                 }
@@ -97,10 +111,10 @@ function Appointment() {
             {editMode ? (
               <input
                 type="text"
-                value={editreservationData?.age}
+                value={editReservationData?.age}
                 onChange={(e) =>
                   setEditReservationData({
-                    ...editreservationData,
+                    ...editReservationData,
                     age: e.target.value,
                   })
                 }
@@ -117,10 +131,10 @@ function Appointment() {
             {editMode ? (
               <input
                 type="date"
-                value={editreservationData?.appointment_date}
+                value={editReservationData?.appointment_date}
                 onChange={(e) =>
                   setEditReservationData({
-                    ...editreservationData,
+                    ...editReservationData,
                     appointment_date: e.target.value,
                   })
                 }
@@ -139,10 +153,10 @@ function Appointment() {
             {editMode ? (
               <input
                 type="time"
-                value={editreservationData?.appointment_time}
+                value={editReservationData?.appointment_time}
                 onChange={(e) =>
                   setEditReservationData({
-                    ...editreservationData,
+                    ...editReservationData,
                     appointment_time: e.target.value,
                   })
                 }
@@ -160,10 +174,10 @@ function Appointment() {
             {editMode ? (
               <input
                 type="text"
-                value={editreservationData?.message}
+                value={editReservationData?.message}
                 onChange={(e) =>
                   setEditReservationData({
-                    ...editreservationData,
+                    ...editReservationData,
                     message: e.target.value,
                   })
                 }
@@ -175,12 +189,57 @@ function Appointment() {
           </div>
         </div>
         <div className="flex items-center justify-end gap-1">
-          <button onClick={handleEdit}>
+          {!editMode ? (
+            <div className="btn " onClick={() => setEditMode(true)}>
+              <MdModeEdit
+                style={{ width: "20px" }}
+                className="hover:text-primary-color"
+              />
+              {/* edit */}
+            </div>
+          ) : (
+            <div
+              className="btn1 btn-primary1"
+              onClick={async () => {
+                try {
+                  // 1) Update the reservation data
+                  await handleEdit();
+
+                  // 3) Exit edit mode
+                  setEditMode(false);
+
+                  // 4) Finally, refresh the page
+                  window.location.reload();
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
+            >
+              {" "}
+              save
+            </div>
+          )}
+          {/* <button
+            onClick={async () => {
+              try {
+                // 1) Update the reservation data
+                await handleEdit();
+
+                // 3) Exit edit mode
+                setEditMode(false);
+
+                // 4) Finally, refresh the page
+                // window.location.reload();
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
             <MdModeEdit
               style={{ width: "20px" }}
               className="hover:text-primary-color"
             />
-          </button>
+          </button> */}
           {/* <button onClick={() => handleDeleteClick(reservationId)}>
             <FaTrashAlt
               style={{ width: "20px" }}
