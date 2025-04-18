@@ -15,6 +15,7 @@ import API_URL from "../api/config";
 const domain = `${API_URL}`;
 const createReservstionUrl = `${domain}/api/reservation/appointments/book/`;
 const getReservstionUrl = `${domain}/api/reservation/appointments/`;
+const getDoctorsUrl = `${domain}/api/doctors/`;
 
 const patientInfo = [
   {
@@ -31,6 +32,30 @@ const patientInfo = [
 
 function index() {
   const [reservationsData, setReservationsData] = useState("");
+  const [allDoctors, setAllDoctors] = React.useState([]);
+  const [slots, setSlots] = useState([]);
+
+  useEffect(() => {
+    const fetchAllDoctors = async () => {
+      try {
+        const response = await axios.get(getDoctorsUrl, {
+          headers: {
+            Authorization: localStorage.getItem("Token1"),
+          },
+        });
+
+        console.log("API Response:", response.data);
+        setAllDoctors(response.data); // ✅ Correctly set the response data
+      } catch (error) {
+        console.error(
+          "Error fetching AllDoctors:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+
+    fetchAllDoctors();
+  }, []);
 
   const validationSchema = Yup.object({
     fullName: Yup.string()
@@ -70,7 +95,7 @@ function index() {
   // }, []);
 
   // Handle form submission
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values) => {
     console.log("Form data:", values);
     try {
       // Send data to backend
@@ -79,13 +104,41 @@ function index() {
       });
       console.log("Appointment booked successfully:", response.data);
       alert("Appointment booked successfully!");
-      resetForm(); // Reset form after successful submission
+      // resetForm();
+      window.location.reload(); // Reload the page to see the updated data
+      // Reset form after successful submission
     } catch (error) {
       console.error("Error booking appointment:", error);
       alert("Failed to book appointment. Try again later.");
     }
-    setSubmitting(false);
   };
+
+  const handleDoctorTime = (id) => {
+    const doc = allDoctors.find((doctor) => doctor.id == id);
+    console.log("Selected doctor:", doc);
+    const startTime = doc.start_time;
+    const endTime = doc.end_time;
+    function generateTimeSlots(startTime, endTime, intervalMinutes) {
+      const slots = [];
+      const start = new Date(`1970-01-01T${startTime}`);
+      const end = new Date(`1970-01-01T${endTime}`);
+
+      while (start < end) {
+        const hours = start.getHours().toString().padStart(2, "0");
+        const minutes = start.getMinutes().toString().padStart(2, "0");
+        slots.push(`${hours}:${minutes}`);
+        start.setMinutes(start.getMinutes() + intervalMinutes);
+        setSlots(slots);
+      }
+
+      return slots;
+    }
+    if (doc) {
+      generateTimeSlots(startTime, endTime, 60);
+    }
+  };
+  console.log("slots", slots);
+
   return (
     <div className="mt-32  ">
       <div className=" container py-20 bg-gray-100">
@@ -94,7 +147,7 @@ function index() {
         <div className="flex items-center justify-center flex-col md:flex-row w-full ">
           <div className="w-full">
             <TabGroup>
-              <TabList className="mb-6 rounded-full border border-black w-fit mx-auto ">
+              {/* <TabList className="mb-6 rounded-full border border-black w-fit mx-auto ">
                 {patientInfo?.map((patient) => {
                   return (
                     <Tab
@@ -105,7 +158,7 @@ function index() {
                     </Tab>
                   );
                 })}
-              </TabList>
+              </TabList> */}
               <TabPanels>
                 {patientInfo?.map((patient) => {
                   return (
@@ -116,17 +169,18 @@ function index() {
                             full_name: "",
                             email: "",
                             phone: "",
+                            doctor: "",
                             appointment_date: "",
                             appointment_time: "",
                             message: "",
                           }}
                           validationSchema={validationSchema}
-                          onSubmit={handleSubmit}
+                          // onSubmit={handleSubmit}
                         >
                           {({ isSubmitting }) => (
                             <Form className="space-y-4">
                               {/* Full Name */}
-                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
                                 <div>
                                   <label className="block font-medium">
                                     Full Name <span>*</span>
@@ -177,8 +231,36 @@ function index() {
                                   />
                                 </div>
                               </div>
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+                              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
                                 {/* Date */}
+                                <div>
+                                  <label className="block font-medium">
+                                    Choose a Doctor{" "}
+                                    <span className="text-red-500">*</span>
+                                  </label>
+                                  <Field
+                                    as="select"
+                                    name="doctor"
+                                    className="w-full p-2 border rounded-md"
+                                    onChange={(e) =>
+                                      handleDoctorTime(e.target.value)
+                                    }
+                                  >
+                                    <option value="">
+                                      -- Select Doctor --
+                                    </option>
+                                    {allDoctors.map((doc) => (
+                                      <option key={doc.id} value={doc.id}>
+                                        {doc.full_name} – {doc.specialization}
+                                      </option>
+                                    ))}
+                                  </Field>
+                                  <ErrorMessage
+                                    name="doctor"
+                                    component="div"
+                                    className="text-red-500 text-sm"
+                                  />
+                                </div>
                                 <div>
                                   <label className="block font-medium">
                                     Appointment Date <span>*</span>
@@ -206,11 +288,9 @@ function index() {
                                     className="w-full p-2 border rounded-md"
                                   >
                                     <option value="">Select a time</option>
-                                    <option value="09:00 AM">09:00 AM</option>
-                                    <option value="10:00 AM">10:00 AM</option>
-                                    <option value="11:00 AM">11:00 AM</option>
-                                    <option value="01:00 PM">01:00 PM</option>
-                                    <option value="02:00 PM">02:00 PM</option>
+                                    {slots?.map((slot) => (
+                                      <option value={slot}>{slot}</option>
+                                    ))}
                                   </Field>
                                   <ErrorMessage
                                     name="time"
@@ -243,6 +323,7 @@ function index() {
                                 type="submit"
                                 disabled={isSubmitting}
                                 className="btn1 btn-primary1 w-fit  mx-auto "
+                                onClick={handleSubmit}
                               >
                                 {isSubmitting
                                   ? "Booking..."
