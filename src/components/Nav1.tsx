@@ -221,51 +221,56 @@ export default function Example() {
                         <div className="-my-6 divide-y divide-gray-500/10">
                           <div className="space-y-2 py-6">
                             <Disclosure as="div" className="-mx-3">
-                              {({ open }) => (
-                                <>
-
-                                  <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-primary-color">
-                                    About
-                                    <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
+                              <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-primary-color">
+                                About
+                                <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
+                              </DisclosureButton>
+                              <DisclosurePanel className="mt-2 space-y-2">
+                                {aboutinfo?.map((item) => (
+                                  <DisclosureButton
+                                    key={item.name}
+                                    as="a"
+                                    href={item.href}
+                                    className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-primary-color no-underline"
+                                  >
+                                    - {item.name}
                                   </DisclosureButton>
-                                  <DisclosurePanel className="mt-2 space-y-2">
-                                    {aboutinfo?.map((item) => (
-                                      <DisclosureButton
-                                        key={item.name}
-                                        as="a"
-                                        href={item.href}
-                                        className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-primary-color no-underline"
-                                      >
-                                        - {item.name}
-                                      </DisclosureButton>
-                                    ))}
-                                  </DisclosurePanel>
-                                  <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-primary-color">
-                                    Services
-                                    <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
-                                  </DisclosureButton>
-                                  <DisclosurePanel className="mt-2 space-y-2">
-                                    {products.map((item) => (
-                                      <DisclosureButton
-                                        key={item.name}
-                                        as="a"
-                                        href={item.href}
-                                        className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-primary-color no-underline"
-                                      >
-                                        - {item.name}
-                                      </DisclosureButton>
-                                    ))}
-                                  </DisclosurePanel>
-                                </>
-                              )}
+                                ))}
+                              </DisclosurePanel>
                             </Disclosure>
 
-                            <a
+                            <Disclosure as="div" className="-mx-3">
+                              <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-primary-color">
+                                Services
+                                <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
+                              </DisclosureButton>
+                              <DisclosurePanel className="mt-2 space-y-2">
+                                {products.map((item) => (
+                                  <DisclosureButton
+                                    key={item.name}
+                                    as="a"
+                                    href={item.href}
+                                    className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-primary-color no-underline"
+                                  >
+                                    - {item.name}
+                                  </DisclosureButton>
+                                ))}
+                              </DisclosurePanel>
+
+                            </Disclosure>
+
+                            {/* <a
                               href="#"
                               className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-primary-color no-underline"
                             >
                               New Patients
-                            </a>
+                            </a> */}
+                            <button className=" btn1 btn-primary1 w-full mt-5">
+                              <Link href="/booking" className="text-md font-semibold leading-6 text-white no-underline">
+                                Book Online
+                                {/* <span aria-hidden="true">&rarr;</span> */}
+                              </Link>
+                            </button>
 
                           </div>
                           <div className="py-6">

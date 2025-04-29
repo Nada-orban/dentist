@@ -10,12 +10,15 @@ import ConfirmModal from "../../../components/confirmModel";
 const domain = `${API_URL}`;
 const getReservstionUrl = `${domain}/api/reservation/appointments/`;
 const singleReservstionUrl = `${domain}/api/reservation/appointments/`;
+const getDoctorsUrl = `${domain}/api/doctors/`;
 
 function appointments() {
   const [reservationsData, setReservationsData] = React.useState([]);
   const router = useRouter();
   const [showModal, setShowModal] = React.useState(false);
   const [selectedDeleteUser, setSelectedDeleteUser] = React.useState(null);
+  const [allDoctors, setAllDoctors] = React.useState([]);
+  const [singleDoctor, setSingleDoctor] = React.useState("");
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -38,6 +41,28 @@ function appointments() {
 
     fetchReservations();
   }, []);
+  useEffect(() => {
+    const fetchAllDoctors = async () => {
+      try {
+        const response = await axios.get(getDoctorsUrl, {
+          headers: {
+            Authorization: localStorage.getItem("Token1"),
+          },
+        });
+
+        console.log("API Response:", response.data);
+        setAllDoctors(response.data); // ✅ Correctly set the response data
+      } catch (error) {
+        console.error(
+          "Error fetching AllDoctors:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+
+    fetchAllDoctors();
+  }, []);
+
   const handleDeleteClick = (user) => {
     setSelectedDeleteUser(user);
     setShowModal(true);
@@ -73,6 +98,10 @@ function appointments() {
     <DashboardLayout>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         {reservationsData.map((reservation) => {
+          const selecteddoctor = allDoctors.find(
+            (doc) => doc.id == reservation.doctor
+          );
+          // setSingleDoctor(doctor);
           return (
             <div className="flex items-start justify-between bg-light-main-color p-4 rounded-lg    gap-4 text-white ">
               <Link
@@ -95,6 +124,12 @@ function appointments() {
                   <div className="flex items-center justify-start gap-1">
                     <div className="text-md md:text-lg font-semibold">Age:</div>
                     <div>{reservation.age}</div>
+                  </div>
+                  <div className="flex items-center justify-start gap-1">
+                    <div className="text-md md:text-lg font-semibold">
+                      doctor:
+                    </div>
+                    <div>{selecteddoctor?.full_name}</div>
                   </div>
                   <div className="flex items-center justify-start gap-1">
                     <div className="text-md md:text-lg font-semibold">

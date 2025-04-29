@@ -18,36 +18,11 @@ const addDoctorUrl = `${domain}/api/doctors/create/`;
 const editDoctorUrl = `${domain}/api/doctors/`;
 const deleteDoctorUrl = `${domain}/api/doctors/`;
 
-const doctors = [
-  {
-    id: 1,
-    image: "/images/Doctors/doctor1.png",
-    title: "Dr.Mostafa El-Masry",
-    description: "Cosmetic and dental implant specialist",
-  },
-  {
-    id: 2,
-    image: "/images/Doctors/doctor2.png",
-    title: "Dr.Ali Gibreel",
-    description: "Cosmetic fillings specialist",
-  },
-  {
-    id: 3,
-    image: "/images/Doctors/doctor3.png",
-    title: "Dr.Mohamed El-Maghrby",
-    description: "Orthodontist and Pediatric dentistry",
-  },
-  {
-    id: 4,
-    image: "/images/Doctors/doctor4.png",
-    title: "Dr.Abd Elrahman El-Abd ",
-    description: "Endodontist",
-  },
-];
-
 function Doctors() {
   const [allDoctors, setAllDoctors] = React.useState([]);
   const [singleDoctor, setSingleDoctor] = React.useState("");
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedDeleteUser, setSelectedDeleteUser] = React.useState(null);
   let [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -83,13 +58,13 @@ function Doctors() {
             return (
               <div>
                 <img
-                  src={`${doctor.profile_image}`}
+                  src={`http://localhost:8000${doctor.profile_image}`}
                   alt=""
                   className="rounded-md h-[333px] "
                 />
                 <div className="mt-3">
                   <h3 className="font-bold">{doctor.full_name}</h3>
-                  <p className="text-gray-500">{doctor.bio}</p>
+                  <p className="text-gray-500">{doctor.specialization}</p>
                 </div>
               </div>
             );

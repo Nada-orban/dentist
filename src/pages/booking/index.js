@@ -16,6 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import AppointmentDatePicker from "../../components/AppointmentDatePicker";
 import { useFormikContext } from "formik";
 import { format } from "date-fns";
+import { FaCheck } from "react-icons/fa6";
 
 const domain = `${API_URL}`;
 const createReservstionUrl = `${domain}/api/reservation/appointments/book/`;
@@ -82,7 +83,6 @@ function index() {
 
   // Handle form submission
   const handleSubmit = async (values) => {
-    console.log("hi");
     console.log("Form data:", values);
     try {
       // Send data to backend
@@ -97,9 +97,10 @@ function index() {
         }
       );
       console.log("Appointment booked successfully:", response.data);
-      alert("Appointment booked successfully!");
+      setFinished(true);
+      // alert("Appointment booked successfully!");
       // resetForm();
-      window.location.reload(); // Reload the page to see the updated data
+      // window.location.reload(); // Reload the page to see the updated data
       // Reset form after successful submission
     } catch (error) {
       console.error("Error booking appointment:", error);
@@ -124,11 +125,17 @@ function index() {
     <div className="mt-32  ">
       <div className=" container py-20 bg-gray-100">
         {" "}
-        <h1 className="text-bold text-center">Book an Appointment</h1>
-        <div className="flex items-center justify-center flex-col md:flex-row w-full ">
-          <div className="w-full">
-            <TabGroup>
-              {/* <TabList className="mb-6 rounded-full border border-black w-fit mx-auto ">
+        {finished ? (
+          <div className="font-bold mx-auto text-center text-2xl">
+            Appointment booked successfully
+          </div>
+        ) : (
+          <>
+            <h1 className="text-bold text-center">Book an Appointment</h1>
+            <div className="flex items-center justify-center flex-col md:flex-row w-full ">
+              <div className="w-full">
+                <TabGroup>
+                  {/* <TabList className="mb-6 rounded-full border border-black w-fit mx-auto ">
                 {patientInfo?.map((patient) => {
                   return (
                     <Tab
@@ -140,12 +147,8 @@ function index() {
                   );
                 })}
               </TabList> */}
-              <TabPanels>
-                <TabPanel>
-                  {finished ? (
-                    <div>Appointment booked successfully</div>
-                  ) : (
-                    <>
+                  <TabPanels>
+                    <TabPanel>
                       <div className="flex flex-col gap-2 mx-10   ">
                         <Formik
                           initialValues={{
@@ -162,7 +165,6 @@ function index() {
                           onSubmit={handleSubmit}
                         >
                           {({ values, isSubmitting, setFieldValue }) => {
-                            console.log("Formik values:", values);
                             useEffect(() => {
                               if (selectedDoctor && values.appointment_date) {
                                 fetch(
@@ -192,7 +194,8 @@ function index() {
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
                                   <div>
                                     <label className="block font-medium">
-                                      Full Name <span>*</span>
+                                      Full Name{" "}
+                                      <span className="text-red-500">*</span>
                                     </label>
                                     <Field
                                       type="text"
@@ -207,7 +210,8 @@ function index() {
                                   </div>
                                   <div>
                                     <label className="block font-medium">
-                                      Age <span>*</span>
+                                      Age{" "}
+                                      <span className="text-red-500">*</span>
                                     </label>
                                     <Field
                                       type="number"
@@ -225,7 +229,8 @@ function index() {
                                   {/* Phone */}
                                   <div>
                                     <label className="block font-medium">
-                                      Phone Number <span>*</span>
+                                      Phone Number{" "}
+                                      <span className="text-red-500">*</span>
                                     </label>
                                     <Field
                                       type="text"
@@ -295,7 +300,8 @@ function index() {
                                     {/* Time */}
                                     <div>
                                       <label className="block font-medium">
-                                        Appointment Time <span>*</span>
+                                        Appointment Time{" "}
+                                        <span className="text-red-500">*</span>
                                       </label>
                                       <Field
                                         as="select"
@@ -317,6 +323,9 @@ function index() {
                                   <div>
                                     <label className="block font-medium">
                                       Email
+                                      <span className="text-xs ms-1">
+                                        (Optional){" "}
+                                      </span>
                                     </label>
                                     <Field
                                       type="email"
@@ -334,7 +343,10 @@ function index() {
                                 {/* Reason for Appointment */}
                                 <div className="mb-4">
                                   <label className="block font-medium ">
-                                    Reason for Appointment
+                                    Reason for Appointment{" "}
+                                    <span className="text-xs ms-1">
+                                      (Optional){" "}
+                                    </span>
                                   </label>
                                   <Field
                                     as="textarea"
@@ -364,13 +376,11 @@ function index() {
                           }}
                         </Formik>
                       </div>
-                    </>
-                  )}
-                </TabPanel>
-              </TabPanels>
-            </TabGroup>
+                    </TabPanel>
+                  </TabPanels>
+                </TabGroup>
 
-            {/* <Tabs
+                {/* <Tabs
             defaultActiveKey="New Patient"
             id="uncontrolled-tab-example"
             className="mb-3 rounded-full border border-black w-fit"
@@ -415,16 +425,11 @@ function index() {
               </Dropdown>
             </Tab>
           </Tabs> */}
-          </div>
-        </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-      {/* <div className="hidden md:block">
-        <img
-          src="/images/Suite-test-4800x3200.webp"
-          alt=""
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div> */}
     </div>
   );
 }
