@@ -30,7 +30,7 @@ function Doctors() {
       try {
         const response = await axios.get(getDoctorsUrl, {
           headers: {
-            Authorization: localStorage.getItem("Token1"),
+            Authorization: undefined,
           },
         });
 
@@ -58,7 +58,7 @@ function Doctors() {
             return (
               <div>
                 <img
-                  src={`http://localhost:8000${doctor.profile_image}`}
+                  src={`${doctor.profile_image}`}
                   alt=""
                   className="rounded-md h-[333px] "
                 />

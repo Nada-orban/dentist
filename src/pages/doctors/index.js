@@ -37,7 +37,7 @@ function Doctors() {
       try {
         const response = await axios.get(getDoctorsUrl, {
           headers: {
-            Authorization: localStorage.getItem("Token1"),
+            Authorization: undefined,
           },
         });
 

@@ -37,7 +37,7 @@ export default function Example() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image className=" w-20 md:w-32 " src={Logo} alt="" />
+            <Image className=" w-20 lg:w-32 " src={Logo} alt="" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -50,7 +50,7 @@ export default function Example() {
 
           </button>
         </div>
-        <div className='block md:hidden'>
+        <div className='block lg:hidden'>
 
           {mobileMenuOpen ? (
             <button>< MdOutlineClose className="w-7 h-7" onClick={() => setMobileMenuOpen(false)} /></button>
@@ -59,7 +59,7 @@ export default function Example() {
 
 
         </div>
-        <div className='hidden md:block'>
+        <div className='hidden lg:block'>
           <div className='flex justify-end items-center'>
             <p className='text-primary-color capitalize'>call us now: <span className='text-gray-100'>01032946286</span></p>
           </div>

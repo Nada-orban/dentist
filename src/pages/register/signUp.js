@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import API_URL from "../api/config";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const domain = `${API_URL}`;
 const signupUrl = `${domain}/api/register/signup/`;
 const logoutUrl = `${domain}/api/register/logout/`;
 
 function signUp() {
+  const router = useRouter();
   const [signUpStatus, setSignUpStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [signUpData, setSignUpData] = useState({
@@ -56,8 +58,9 @@ function signUp() {
             "Content-Type": "application/json",
           },
         })
-        .then((res) =>
-          localStorage.setItem("Token1", `Token ${res.data.token}`)
+        .then(
+          (res) => localStorage.setItem("Token1", `Token ${res.data.token}`),
+          router.push("/signIn")
         )
         .catch((e) => {
           console.error("Signup error", e.response?.data || e.message);

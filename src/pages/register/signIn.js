@@ -2,34 +2,48 @@ import React, { useEffect, useState } from "react";
 import API_URL from "../api/config";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const domain = `${API_URL}`;
 const signinUrl = `${domain}/api/register/signin/`;
 const logoutUrl = `${domain}/api/register/logout/`;
 
 function signIn() {
-  const [signInStatus, setSignInStatus] = useState("");
+  const [signInStatus, setSignInStatus] = useState(false);
   const [signInData, setSignInData] = useState({ username: "", password: "" });
+  const router = useRouter();
+  // const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setSignInData({ ...signInData, [e.target.name]: e.target.value });
   };
   // console.log("signInData", signInData);
-  const submitSigninForm = () => {
-    if (signInData.username && signInData.password) {
+  const submitSigninForm = (e) => {
+    e.preventDefault();
+    // if (signInData.username && signInData.password) {
+    try {
       const contantFormData = new FormData();
       contantFormData.append("username", signInData.username);
       contantFormData.append("password", signInData.password);
 
-      axios
-        .post(signinUrl, contantFormData)
-        .then((res) => {
-          localStorage.setItem("Token1", `Token ${res.data.token}`);
-        })
-        .catch((e) => {
-          setSignInStatus("error");
-        });
+      axios.post(signinUrl, contantFormData).then((res) => {
+        localStorage.setItem("Token1", `Token ${res.data.token}`);
+      });
+      console.log("Sign-in successful:", signInData);
+      setSignInStatus(true);
+      router.push("/dashboard");
+    } catch (e) {
+      console.error("Sign-in failed:", err);
+      if (err.response) {
+        console.error("Server responded with:", err.response.data);
+      } else if (err.request) {
+        console.error("No response received:", err.request);
+      } else {
+        console.error("Request setup error:", err.message);
+      }
+      // setSignInStatus("error");
     }
+    // }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 pt-40">
