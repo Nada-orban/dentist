@@ -28,10 +28,18 @@ function signIn() {
 
       axios.post(signinUrl, contantFormData).then((res) => {
         localStorage.setItem("Token1", `Token ${res.data.token}`);
+        localStorage.setItem("UserRole", res.data.role);
       });
       console.log("Sign-in successful:", signInData);
       setSignInStatus(true);
-      router.push("/dashboard");
+      if (
+        localStorage.getItem("UserRole", res.data.role) === "admin" ||
+        localStorage.getItem("UserRole", res.data.role) === "doctor_profile"
+      ) {
+        router.push("/dashboard");
+      } else {
+        router.push("/");
+      }
     } catch (e) {
       console.error("Sign-in failed:", err);
       if (err.response) {

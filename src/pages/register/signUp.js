@@ -58,10 +58,11 @@ function signUp() {
             "Content-Type": "application/json",
           },
         })
-        .then(
-          (res) => localStorage.setItem("Token1", `Token ${res.data.token}`),
-          router.push("/signIn")
-        )
+        .then((res) => {
+          localStorage.setItem("Token1", `Token ${res.data.token}`),
+            localStorage.setItem("UserRole", res.data.role),
+            router.push("/signIn");
+        })
         .catch((e) => {
           console.error("Signup error", e.response?.data || e.message);
           setSignUpStatus("error");
