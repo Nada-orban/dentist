@@ -40,7 +40,7 @@ function signIn() {
       } else {
         router.push("/");
       }
-    } catch (e) {
+    } catch (err) {
       console.error("Sign-in failed:", err);
       if (err.response) {
         console.error("Server responded with:", err.response.data);

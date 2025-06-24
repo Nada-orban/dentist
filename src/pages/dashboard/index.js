@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import DashboardLayout from "../../components/DashboardLayout";
+import API_URL from "../api/config";
+import axios from "axios";
 
-const DoctorDashboard = () => {
+const domain = `${API_URL}`;
+const getDashboardDoctorUrl = `${domain}/api/dashboard/doctor/`;
+
+function DoctorDashboard() {
+  const [doctorData, setDoctorData] = React.useState(null);
+
+  useEffect(() => {
+    const fetchDashboardDoctorData = async () => {
+      try {
+        const response = await axios.get(getDashboardDoctorUrl, {
+          headers: {
+            Authorization: localStorage.getItem("Token1"),
+          },
+        });
+
+        console.log("dashboard doctor Response:", response.data);
+        setDoctorData(response.data); // ✅ Correctly set the response data
+      } catch (error) {
+        console.error(
+          "Error fetching reservations:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+
+    fetchDashboardDoctorData();
+  }, []);
+
   return (
     <DashboardLayout>
       {/* Main Section */}
@@ -25,6 +54,6 @@ const DoctorDashboard = () => {
       </section>
     </DashboardLayout>
   );
-};
+}
 
 export default DoctorDashboard;

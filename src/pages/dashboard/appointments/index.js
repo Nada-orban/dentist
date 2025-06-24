@@ -29,7 +29,7 @@ function appointments() {
           },
         });
 
-        console.log("API Response:", response.data);
+        console.log("booking Response:", response.data);
         setReservationsData(response.data); // ✅ Correctly set the response data
       } catch (error) {
         console.error(
@@ -50,7 +50,7 @@ function appointments() {
           },
         });
 
-        console.log("API Response:", response.data);
+        console.log("Doctors Response:", response.data);
         setAllDoctors(response.data); // ✅ Correctly set the response data
       } catch (error) {
         console.error(
