@@ -18,23 +18,23 @@ function signIn() {
     setSignInData({ ...signInData, [e.target.name]: e.target.value });
   };
   // console.log("signInData", signInData);
-  const submitSigninForm = (e) => {
+  const submitSigninForm = async (e) => {
     e.preventDefault();
     // if (signInData.username && signInData.password) {
     try {
       const contantFormData = new FormData();
       contantFormData.append("username", signInData.username);
       contantFormData.append("password", signInData.password);
+      const res = await axios.post(signinUrl, contantFormData);
 
-      axios.post(signinUrl, contantFormData).then((res) => {
-        localStorage.setItem("Token1", `Token ${res.data.token}`);
-        localStorage.setItem("UserRole", res.data.role);
-      });
       console.log("Sign-in successful:", signInData);
+      localStorage.setItem("Token1", `Token ${res.data.token}`);
+      localStorage.setItem("UserRole", res.data.role);
+
       setSignInStatus(true);
       if (
-        localStorage.getItem("UserRole", res.data.role) === "admin" ||
-        localStorage.getItem("UserRole", res.data.role) === "doctor_profile"
+        localStorage.getItem("UserRole") === "admin" ||
+        localStorage.getItem("UserRole") === "doctor_profile"
       ) {
         router.push("/dashboard");
       } else {
