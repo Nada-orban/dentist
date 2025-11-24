@@ -42,7 +42,7 @@ const DashboardLayout = ({ children, doctorData }) => {
             <li className="mb-4">
               <Link
                 className="text-white no-underline"
-                href="/dashboard/patients"
+                href="/dashboard/patient"
               >
                 <p className=" hover:text-primary-color">Patients</p>
               </Link>
@@ -71,20 +71,11 @@ const DashboardLayout = ({ children, doctorData }) => {
       {/* Main Content */}
       <main className="flex-1 p-6 bg-gray-100">
         {/* Header */}
-        <header className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-semibold">Dashboard</h1>
+        {/* <header className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-semibold"></h1>
           <div className="flex items-center space-x-4">
             <span>Dr.{doctorData?.doctor?.full_name}</span>
 
-            {/* <img
-              src="/images/Doctors/doctor1.png"
-              alt="Doctor Avatar"
-              className="w-10 h-10 rounded-full"
-            /> */}
-
-            <button className="px-3 py-1 bg-primary-color text-white rounded hover:bg-dark-primary-color">
-              Logout
-            </button>
             <Popover className="relative">
               <PopoverButton className="inline-flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
                 <img
@@ -92,7 +83,6 @@ const DashboardLayout = ({ children, doctorData }) => {
                   alt="Doctor Avatar"
                   className="w-10 h-10 rounded-full"
                 />
-                {/* <FaAngleDown aria-hidden="true" className="size-5" /> */}
               </PopoverButton>
 
               <PopoverPanel
@@ -107,10 +97,6 @@ const DashboardLayout = ({ children, doctorData }) => {
                         href={item.href}
                         className=" items-center justify-center  p-3 font-semibold text-gray-900 hover:bg-gray-100 border bottom-1"
                       >
-                        {/* <item.icon
-                          aria-hidden="true"
-                          className="size-5 flex-none text-gray-400"
-                        /> */}
                         {item.name}
                       </a>
                     ))}
@@ -119,7 +105,7 @@ const DashboardLayout = ({ children, doctorData }) => {
               </PopoverPanel>
             </Popover>
           </div>
-        </header>
+        </header> */}
         {children}
       </main>
     </div>

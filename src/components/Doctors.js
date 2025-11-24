@@ -45,7 +45,7 @@ function Doctors() {
     };
 
     fetchAllDoctors();
-  }, [allDoctors]);
+  }, []);
 
   return (
     <div className="bg-white my-3 py-4">

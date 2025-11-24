@@ -31,7 +31,7 @@ function Doctors() {
   const [selectedDeleteUser, setSelectedDeleteUser] = React.useState(null);
   const [editMode, setEditMode] = useState(false);
   let [isOpen, setIsOpen] = useState(false);
-
+  // console.log("Doctors component rendered");
   useEffect(() => {
     const fetchAllDoctors = async () => {
       try {

@@ -25,11 +25,13 @@ function signIn() {
       const contantFormData = new FormData();
       contantFormData.append("username", signInData.username);
       contantFormData.append("password", signInData.password);
+      contantFormData.append("role", signInData.role);
       const res = await axios.post(signinUrl, contantFormData);
-
+      console.log("Response from server:", res.data);
       console.log("Sign-in successful:", signInData);
       localStorage.setItem("Token1", `Token ${res.data.token}`);
       localStorage.setItem("UserRole", res.data.role);
+      localStorage.setItem("UserName", res.data.username);
 
       setSignInStatus(true);
       if (

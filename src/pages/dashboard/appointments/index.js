@@ -41,6 +41,7 @@ function appointments() {
 
     fetchReservations();
   }, []);
+  console.log("reservationsData", reservationsData);
   useEffect(() => {
     const fetchAllDoctors = async () => {
       try {
