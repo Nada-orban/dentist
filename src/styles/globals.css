@@ -13,6 +13,65 @@
 .infobBox {
   @apply bg-white  shadow-md  rounded-lg  p-4;
 }
+.patient-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  /* width: 360px; */
+  display: flex;
+  flex-direction: column;
+  /* gap: 10px; */
+  transition: box-shadow 0.2s ease;
+}
+
+.patient-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.patient-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.phone {
+  color: #C5B069;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.card-subheader {
+  color: #555;
+  font-size: 14px;
+}
+
+.card-body p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.card-body p span {
+  font-weight: 600;
+  color: #222;
+}
+
+.card-footer {
+  /* margin-top: 10px; */
+  font-size: 14px;
+  color: #444;
+  /* border-top: 1px solid #eee; */
+  /* padding-top: 10px; */
+  font-weight: 600;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;

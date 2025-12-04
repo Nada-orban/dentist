@@ -1,9 +1,13 @@
-import React, { use, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../../components/DashboardLayout";
 import API_URL from "../../api/config";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { FaPhoneAlt } from "react-icons/fa";
+import { IoMail } from "react-icons/io5";
+import { Dialog } from "@headlessui/react";
+import AddPatient from "../../../components/addPatient";
 
 const domain = `${API_URL}`;
 const getPatientsUrl = `${domain}/api/dashboard/patientInfo/`;
@@ -12,6 +16,7 @@ const singlePatientUrl = `${domain}/api/dashboard/patient/<int:pk>/`;
 
 function patients() {
   const [patientsData, setPatientsData] = React.useState([]);
+  let [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const fetchPatients = async () => {
@@ -61,73 +66,78 @@ function patients() {
             </svg>
           </div>
 
-          <button className="bg-main-color  text-white text-sm font-medium px-4 py-2 rounded-full">
+          <button
+            className="bg-main-color  text-white text-sm font-medium px-4 py-2 rounded-full"
+            onClick={() => setIsOpen(true)}
+          >
             + Add Patients
           </button>
         </div>
       </div>
+
       <div className="grid grid-cols-1  lg:grid-cols-2  gap-4 my-2">
-        {patientsData.patients?.map((patient) => {
+        {patientsData?.map((patient) => {
           return (
-            <div className="bg-white rounded-xl shadow-md p-4 w-full max-w-sm">
-              <div className="flex items-center justify-between mb-2">
+            <div className="patient-card">
+              <div className="card-header">
+                <h3 className="patient-name">{patient.patient_name}</h3>
                 <div>
-                  <h2 className="text-lg font-semibold">
-                    {patient.patient_name}
-                  </h2>
-                  <p className="text-sm text-gray-500">{patient.email}</p>
-                </div>
-                <div className="flex gap-2">
-                  <button className="text-primary-color hover:underline text-sm flex flex-col">
-                    <div>📞 </div>
-                    <div>{patient.phone}</div>
-                  </button>
-                  {/* <button className="text-primary-color hover:underline text-sm">
-                📊 Live Vital
-              </button> */}
+                  <p className="flex items-center gap-2 text-sm mb-1">
+                    <FaPhoneAlt />
+                    <span className="text-primary-color text-sm">
+                      {patient.phone}
+                    </span>
+                  </p>
+                  <p className="flex items-center gap-2 text-sm mb-1">
+                    <IoMail />
+                    <span className="text-primary-color text-sm">
+                      {patient.email}
+                    </span>
+                  </p>
                 </div>
               </div>
-              <div className="text-sm text-gray-700 space-y-1">
-                <p>
-                  <span className="font-medium">Gender, Age:</span>{" "}
-                  {patient.gender},{patient.age}
-                </p>
-                <p>
-                  <span className="font-medium">Address:</span>{" "}
-                  {patient.address}
-                </p>
-                <p>
-                  <span className="font-medium">Allergies :</span>{" "}
-                  {patient.allergies}
-                </p>
-                <p>
-                  <span className="font-medium">Medications:</span>{" "}
-                  {patient.medications}
-                </p>
-                <p>
-                  <span className="font-medium">Emergency Contact:</span>{" "}
-                  {patient.emergency_contact}
-                </p>
 
-                <p>
-                  <span className="font-medium">Created At:</span>{" "}
-                  {new Date(patient.created_at).toLocaleDateString()}
-                </p>
+              {/* <div className="card-subheader">
+                <p className="email">{patient.email}</p>
+              </div> */}
 
+              <div className="card-body">
                 <p>
-                  <span className="font-medium">Last Updated By:</span>{" "}
-                  {patient.last_updated_by?.username || "N/A"}
+                  <span>Gender:</span> {patient.gender}
                 </p>
-
                 <p>
-                  <span className="font-medium">Last Updated At:</span>{" "}
-                  {new Date(patient.last_updated_at).toLocaleString()}
+                  <span>Age:</span> {patient.age}
+                </p>
+                <p>
+                  <span>Address:</span> {patient.address}
+                </p>
+                <p>
+                  <span>Allergies:</span> {patient.allergies || "None"}
+                </p>
+                <p>
+                  <span>Medications:</span> {patient.medications || "None"}
+                </p>
+                <p>
+                  <span>Emergency Contact:</span> {patient.emergency || "None"}
+                </p>
+                <p>
+                  <span>Created:</span> {patient.createdAt || "None"}
+                </p>
+                <p>
+                  <span>Last Updated:</span> {patient.updatedAt || "None"}
                 </p>
               </div>
             </div>
           );
         })}
       </div>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="relative z-50 overflow-y-auto"
+      >
+        <AddPatient />
+      </Dialog>
     </DashboardLayout>
   );
 }

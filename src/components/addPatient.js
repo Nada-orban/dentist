@@ -12,39 +12,39 @@ import API_URL from "../pages/api/config";
 
 const domain = `${API_URL}`;
 const getDoctorsUrl = `${domain}/api/doctors/`;
-const addDoctorUrl = `${domain}/api/doctors/create/`;
-const editDoctorUrl = `${domain}/api/doctors/`;
-const deleteDoctorUrl = `${domain}/api/doctors/`;
+const addPatientUrl = `${domain}/api/dashboard/addPatient/`;
 
-function addDoctor() {
+function addPatient() {
   const initialValues = {
-    full_name: "",
+    patient_name: "",
+    age: "",
     email: "",
     phone: "",
     gender: "",
-    specialization: "",
-    experience_years: "",
-    available_days: [],
-    start_time: "",
-    end_time: "",
-    bio: "",
-    is_active: "",
-    profile_image: null,
+    address: "",
+    allergies: [],
+    created_at: "",
+    last_updated_at: "",
+    last_updated_by: "",
+    doctor: "",
+    medications: [],
+    emergency_contact: "",
   };
 
   const validationSchema = Yup.object({
-    full_name: Yup.string().required("Full name is required"),
+    patient_name: Yup.string().required("Full name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     phone: Yup.string().required("Phone number is required"),
     gender: Yup.string()
       .oneOf(["Male", "Female"])
       .required("Gender is required"),
-    specialization: Yup.string().required("Specialization is required"),
-    experience_years: Yup.number().min(0, "Must be 0 or more").nullable(),
-    // available_days: Yup.string().required("Please specify available days"),
-    start_time: Yup.string(),
-    end_time: Yup.string(),
-    bio: Yup.string(),
+    address: Yup.string().required("address is required"),
+    age: Yup.number().min(0, "Must be 1 or more").nullable(),
+    // allergies: Yup.string().required("Please specify available days"),
+
+    created_at: Yup.string(),
+    last_updated_at: Yup.string(),
+    doctor: Yup.string(),
     // profile_image is optional
   });
 
@@ -52,33 +52,35 @@ function addDoctor() {
     try {
       const formData = new FormData();
       // Append all fields from your form (assuming you have them in a `values` object)
-      formData.append("full_name", values.full_name);
+      formData.append("patient_name", values.patient_name);
       formData.append("email", values.email);
       formData.append("phone", values.phone);
       formData.append("gender", values.gender);
-      formData.append("specialization", values.specialization);
-      formData.append("experience_years", values.experience_years);
-      formData.append("start_time", values.start_time); // "HH:MM" format
-      formData.append("end_time", values.end_time); // "HH:MM" format
-      formData.append("bio", values.bio);
-      formData.append("is_active", values.is_active ? "true" : "false"); // true or false
+      formData.append("address", values.address);
+      formData.append("age", values.age);
+      formData.append("created_at", values.created_at); // "HH:MM" format
+      formData.append("last_updated_at", values.last_updated_at); // "HH:MM" format
+      formData.append("doctor", values.doctor);
+      formData.append("emergency_contact", values.emergency_contact);
+      formData.append("last_updated_by", values.last_updated_by);
 
-      if (values.available_days) {
-        values.available_days.forEach((day) => {
-          formData.append("available_days", day);
+      if (values.allergies) {
+        values.allergies.forEach((allergy) => {
+          formData.append("allergies", allergy);
+        });
+      }
+      if (values.medications) {
+        values.medications.forEach((medication) => {
+          formData.append("medications", medication);
         });
       }
 
-      // If there's a profile image, make sure it's a File object
-      if (values.profile_image) {
-        formData.append("profile_image", values.profile_image);
-      }
       console.log("FormData entries:", [...formData.entries()]);
 
       console.log("Submitting form data:", values);
 
       await axios
-        .post(addDoctorUrl, formData, {
+        .post(addPatientUrl, formData, {
           headers: {
             Authorization: localStorage.getItem("Token1"),
           },
@@ -101,9 +103,9 @@ function addDoctor() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50   flex w-full items-center justify-center p-4 overflow-y-auto  pt-10">
-      <DialogPanel className=" space-y-4 border bg-white px-12 pb-12 mt-40 ">
-        <DialogTitle className="font-bold my-10">Add Doctor:</DialogTitle>
+    <div className="fixed inset-0 bg-black bg-opacity-50   flex w-full items-center justify-center p-4 overflow-y-auto  ">
+      <DialogPanel className=" space-y-4 border bg-white px-12 pb-12 mt-10 ">
+        <DialogTitle className="font-bold my-10">Add Patient:</DialogTitle>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -113,18 +115,18 @@ function addDoctor() {
             <Form encType="multipart/form-data" className="space-y-4">
               {/* Full Name */}
               <div className="flex items-center gap-4">
-                <label htmlFor="full_name" className="w-40">
+                <label htmlFor="patient_name" className="w-40">
                   Full Name:
                 </label>
                 <Field
-                  name="full_name"
+                  name="patient_name"
                   type="text"
-                  id="full_name"
+                  id="patient_name"
                   className="w-full border p-2 rounded"
                 />
               </div>
               <ErrorMessage
-                name="full_name"
+                name="patient_name"
                 component="div"
                 className="text-red-500 ml-44"
               />
@@ -187,125 +189,112 @@ function addDoctor() {
                 className="text-red-500 ml-44"
               />
 
-              {/* Specialization */}
+              {/* address */}
               <div className="flex items-center gap-4">
-                <label htmlFor="specialization" className="w-40">
-                  Specialization:
+                <label htmlFor="address" className="w-40">
+                  address:
                 </label>
                 <Field
-                  name="specialization"
+                  name="address"
                   type="text"
-                  id="specialization"
+                  id="address"
                   className="w-full border p-2 rounded"
                 />
               </div>
               <ErrorMessage
-                name="specialization"
+                name="address"
                 component="div"
                 className="text-red-500 ml-44"
               />
 
               {/* Experience */}
               <div className="flex items-center gap-4">
-                <label htmlFor="experience_years" className="w-40">
-                  Experience (years):
+                <label htmlFor="age" className="w-40">
+                  Age:
                 </label>
                 <Field
-                  name="experience_years"
+                  name="age"
                   type="number"
-                  id="experience_years"
+                  id="age"
                   className="w-full border p-2 rounded"
                 />
               </div>
               <ErrorMessage
-                name="experience_years"
+                name="age"
                 component="div"
                 className="text-red-500 ml-44"
               />
-
-              {/* Available Days */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="available_days" className="w-40">
-                  Available Days:
+              <div className="flex items-start gap-4">
+                <label htmlFor="bio" className="w-40 pt-2">
+                  doctor:
                 </label>
-                {/* <Field
-                  name="available_days"
-                  type="text"
-                  id="available_days"
-                  placeholder="e.g., Monday, Wednesday"
-                  className="w-full border p-2 rounded"
-                /> */}
                 <Field
-                  multiple={true}
-                  as="select"
-                  name="available_days"
-                  id="available_days"
+                  name="bio"
+                  // as="textarea"
+                  id="bio"
+                  className="w-full border p-2 rounded "
+                />
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label htmlFor="allergies" className="w-40">
+                  Allergies:
+                </label>
+
+                <Field
+                  name="allergies"
+                  id="allergies"
                   className="w-full border p-2 rounded"
                   onChange={(e) => {
-                    const selected = Array.from(
-                      e.target.selectedOptions,
-                      (opt) => opt.value
+                    setFieldValue(
+                      "allergies",
+                      e.target.value.split(",").map((item) => item.trim())
                     );
-                    setFieldValue("available_days", selected);
                   }}
-                >
-                  <option value="">Select Day</option>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                  <option value="Saturday">Saturday</option>
-                  <option value="Sunday">Sunday</option>
-                </Field>
+                />
               </div>
               <ErrorMessage
-                name="available_days"
+                name="allergies"
                 component="div"
                 className="text-red-500 ml-44"
               />
 
               {/* Start Time */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="start_time" className="w-40">
+              {/* <div className="flex items-center gap-4">
+                <label
+                  htmlFor="created_at
+created_at"
+                  className="w-40"
+                >
                   Start Time:
                 </label>
                 <Field
-                  name="start_time"
+                  name="created_at
+created_at"
                   type="time"
-                  id="start_time"
+                  id="created_at
+created_at"
                   className="w-full border p-2 rounded"
                 />
-              </div>
+              </div> */}
 
               {/* End Time */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="end_time" className="w-40">
+              {/* <div className="flex items-center gap-4">
+                <label htmlFor="last_updated_at" className="w-40">
                   End Time:
                 </label>
                 <Field
-                  name="end_time"
+                  name="last_updated_at"
                   type="time"
-                  id="end_time"
+                  id="last_updated_at"
                   className="w-full border p-2 rounded"
                 />
-              </div>
+              </div> */}
 
-              {/* Bio */}
-              <div className="flex items-start gap-4">
-                <label htmlFor="bio" className="w-40 pt-2">
-                  Bio:
-                </label>
-                <Field
-                  name="bio"
-                  as="textarea"
-                  id="bio"
-                  className="w-full border p-2 rounded h-24"
-                />
-              </div>
+              {/*doctor */}
 
               {/* Profile Image */}
-              <div className="flex items-center gap-4">
+              {/* <div className="flex items-center gap-4">
                 <label htmlFor="profile_image" className="w-40">
                   Profile Image:
                 </label>
@@ -321,10 +310,10 @@ function addDoctor() {
                     );
                   }}
                 />
-              </div>
+              </div> */}
 
               {/* Active */}
-              <div className="flex items-center gap-4  ">
+              {/* <div className="flex items-center gap-4  ">
                 <label htmlFor="is_active" className="w-40">
                   Active:
                 </label>
@@ -335,7 +324,7 @@ function addDoctor() {
                   checked={values.is_active}
                   className="w-5 h-5 "
                 />
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="btn1 btn-primary1 w-full  "
@@ -351,4 +340,4 @@ function addDoctor() {
   );
 }
 
-export default addDoctor;
+export default addPatient;

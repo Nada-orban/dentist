@@ -97,6 +97,36 @@ function appointments() {
   };
   return (
     <DashboardLayout>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-white shadow-md rounded-xl">
+        <h1 className="text-2xl font-bold text-gray-800">Appointments List</h1>
+        <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full md:w-64">
+            <input
+              type="text"
+              placeholder="Search Patients"
+              className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary-color"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-4.35-4.35M16.65 10.5A6.15 6.15 0 1110.5 4.35a6.15 6.15 0 016.15 6.15z"
+              />
+            </svg>
+          </div>
+
+          <button className="bg-main-color  text-white text-sm font-medium px-4 py-2 rounded-full">
+            + Add Appointment
+          </button>
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         {reservationsData.map((reservation) => {
           const selecteddoctor = allDoctors.find(
@@ -104,7 +134,7 @@ function appointments() {
           );
           // setSingleDoctor(doctor);
           return (
-            <div className="flex items-start justify-between bg-light-main-color p-4 rounded-lg    gap-4 text-white ">
+            <div className="flex items-start justify-between bg-white p-4 rounded-lg    gap-4 text-black ">
               <Link
                 href={{
                   pathname: `/dashboard/appointments/${reservation.id}`,
@@ -113,7 +143,7 @@ function appointments() {
                   },
                 }}
                 key={reservation.id}
-                className="no-underline text-white "
+                className="no-underline text-black "
               >
                 <div>
                   <div className="flex items-center justify-start gap-1">
