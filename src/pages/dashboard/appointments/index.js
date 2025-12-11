@@ -127,14 +127,14 @@ function appointments() {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
         {reservationsData.map((reservation) => {
           const selecteddoctor = allDoctors.find(
             (doc) => doc.id == reservation.doctor
           );
           // setSingleDoctor(doctor);
           return (
-            <div className="flex items-start justify-between bg-white p-4 rounded-lg    gap-4 text-black ">
+            <div className="flex items-start justify-between bg-white p-4 gap-4 text-black shadow-md rounded-xl ">
               <Link
                 href={{
                   pathname: `/dashboard/appointments/${reservation.id}`,

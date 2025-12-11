@@ -6,6 +6,11 @@ import axios from "axios";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { MdDashboard } from "react-icons/md";
+import { SlCalender } from "react-icons/sl";
+import { MdOutlinePayment } from "react-icons/md";
+import { FaRegUser, FaHospitalUser } from "react-icons/fa";
+import { IoIosSettings, IoIosLogOut } from "react-icons/io";
 
 const domain = `${API_URL}`;
 const logoutUrl = `${domain}/api/register/logout/`;
@@ -18,50 +23,79 @@ const DashboardLayout = ({ children, doctorData }) => {
   return (
     <div className="min-h-screen flex">
       {/* Aside Navigation */}
-      <aside className="w-64 bg-main-color text-white p-6">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-primary-color">
+      <aside className="w-56 bg-main-color text-white p-6 ">
+        <div className="mb-8  flex flex-col items-center">
+          {/* <h2 className="text-2xl font-bold text-primary-color">
             Doctor Dashboard
-          </h2>
+          </h2> */}
+          <div className="rounded-full">
+            <img
+              src="/images/Doctors/doctor1.png"
+              alt="Doctor Avatar"
+              className="w-20 h-20 rounded-full"
+            />
+          </div>
+          <h3 className="mt-4 text-lg font-semibold">
+            Dr.{doctorData?.doctor?.full_name}
+          </h3>
+          <p>mnbjhgjhg jjkhjkh</p>
+          <hr className="text-white" />
         </div>
         <nav>
           <ul>
-            <li className="mb-4 ">
-              <Link className="text-white no-underline" href="/dashboard">
-                <p className=" hover:text-primary-color">Home</p>
+            <li className=" ">
+              <Link
+                className="text-white no-underline flex justify-start gap-1 items-center"
+                href="/dashboard"
+              >
+                <MdDashboard style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Home</p>
               </Link>
             </li>
-            <li className="mb-4">
+            <li className="">
               <Link
-                className="text-white no-underline"
+                className="text-white no-underline flex justify-start gap-1 items-center"
                 href="/dashboard/appointments"
               >
-                <p className=" hover:text-primary-color">Appointments</p>
+                <SlCalender style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Appointments</p>
               </Link>
             </li>
-            <li className="mb-4">
+            <li className="">
               <Link
-                className="text-white no-underline"
+                className="text-white no-underline flex justify-start gap-1 items-center"
                 href="/dashboard/patient"
               >
-                <p className=" hover:text-primary-color">Patients</p>
+                <FaHospitalUser style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Patients</p>
               </Link>
             </li>
-            <li className="mb-4">
+            <li className="">
               <Link
-                className="text-white no-underline"
+                className="text-white no-underline flex justify-start gap-1 items-center"
                 href="/dashboard/messages"
               >
-                <p className=" hover:text-primary-color">Messages</p>
+                <FaRegUser style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Profile</p>
               </Link>
             </li>
 
-            <li className="mb-4">
+            <li className="">
               <Link
-                className="text-white no-underline"
+                className="text-white no-underline flex justify-start gap-1 items-center"
                 href="/dashboard/settings"
               >
-                <p className=" hover:text-primary-color">Settings</p>
+                <IoIosSettings style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Settings</p>
+              </Link>
+            </li>
+            <li className="">
+              <Link
+                className="text-white no-underline flex justify-start gap-1 items-center"
+                href="/dashboard/settings"
+              >
+                <IoIosLogOut style={{ width: "20px" }} />
+                <p className="mt-3 hover:text-primary-color">Logout</p>
               </Link>
             </li>
           </ul>

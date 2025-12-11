@@ -75,7 +75,7 @@ function patients() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1  lg:grid-cols-2  gap-4 my-2">
+      <div className="grid grid-cols-1  lg:grid-cols-2  gap-4 my-3">
         {patientsData?.map((patient) => {
           return (
             <div className="patient-card">
