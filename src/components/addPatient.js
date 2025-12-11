@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {
@@ -11,10 +11,32 @@ import axios from "axios";
 import API_URL from "../pages/api/config";
 
 const domain = `${API_URL}`;
-const getDoctorsUrl = `${domain}/api/doctors/`;
 const addPatientUrl = `${domain}/api/dashboard/addPatient/`;
+const getDoctorsUrl = `${domain}/api/doctors/`;
 
 function addPatient() {
+  const [allDoctors, setAllDoctors] = React.useState([]);
+  useEffect(() => {
+    const fetchAllDoctors = async () => {
+      try {
+        const response = await axios.get(getDoctorsUrl, {
+          headers: {
+            Authorization: localStorage.getItem("Token1"),
+          },
+        });
+
+        console.log("API Response:", response.data);
+        setAllDoctors(response.data); // ✅ Correctly set the response data
+      } catch (error) {
+        console.error(
+          "Error fetching AllDoctors:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+
+    fetchAllDoctors();
+  }, []);
   const initialValues = {
     patient_name: "",
     age: "",
@@ -44,7 +66,7 @@ function addPatient() {
 
     created_at: Yup.string(),
     last_updated_at: Yup.string(),
-    doctor: Yup.string(),
+
     // profile_image is optional
   });
 
@@ -83,6 +105,7 @@ function addPatient() {
         .post(addPatientUrl, formData, {
           headers: {
             Authorization: localStorage.getItem("Token1"),
+            "Content-Type": "application/json",
           },
         })
         .then((res) => console.log(res));
@@ -224,16 +247,29 @@ function addPatient() {
                 component="div"
                 className="text-red-500 ml-44"
               />
-              <div className="flex items-start gap-4">
-                <label htmlFor="bio" className="w-40 pt-2">
+              <div className="flex items-center gap-4">
+                <label htmlFor="medications" className="w-40">
                   doctor:
                 </label>
                 <Field
-                  name="bio"
-                  // as="textarea"
-                  id="bio"
-                  className="w-full border p-2 rounded "
-                />
+                  as="select"
+                  name="doctor"
+                  className="w-full p-2 border rounded-md"
+                  value={values.doctor}
+                  onChange={(e) => {
+                    const selectedId = e.target.value;
+                    setFieldValue("doctor", selectedId); // update Formik's value
+                  }}
+                >
+                  <option value="" disabled>
+                    Select Doctor
+                  </option>
+                  {allDoctors.map((doc) => (
+                    <option key={doc.id} value={doc.id}>
+                      {doc.full_name} – {doc.specialization}
+                    </option>
+                  ))}
+                </Field>
               </div>
 
               <div className="flex items-center gap-4">
@@ -241,24 +277,77 @@ function addPatient() {
                   Allergies:
                 </label>
 
-                <Field
-                  name="allergies"
-                  id="allergies"
-                  className="w-full border p-2 rounded"
-                  onChange={(e) => {
-                    setFieldValue(
-                      "allergies",
-                      e.target.value.split(",").map((item) => item.trim())
-                    );
-                  }}
-                />
+                <Field name="allergies">
+                  {({ field, form }) => (
+                    <input
+                      id="allergies"
+                      className="w-full border p-2 rounded"
+                      value={
+                        Array.isArray(field.value) ? field.value.join(", ") : ""
+                      }
+                      onChange={(e) => {
+                        const arr = e.target.value
+                          .split(",")
+                          .map((item) => item.trim())
+                          .filter(Boolean);
+
+                        form.setFieldValue("allergies", arr);
+                      }}
+                    />
+                  )}
+                </Field>
               </div>
               <ErrorMessage
                 name="allergies"
                 component="div"
                 className="text-red-500 ml-44"
               />
+              <div className="flex items-center gap-4">
+                <label htmlFor="medications" className="w-40">
+                  medications:
+                </label>
+                <Field name="medications">
+                  {({ field, form }) => (
+                    <input
+                      {...field}
+                      id="medications"
+                      className="w-full border p-2 rounded"
+                      value={
+                        Array.isArray(field.value) ? field.value.join(", ") : ""
+                      }
+                      onChange={(e) => {
+                        const arr = e.target.value
+                          .split(",")
+                          .map((item) => item.trim())
+                          .filter(Boolean); // remove empty items
 
+                        form.setFieldValue("medications", arr);
+                      }}
+                    />
+                  )}
+                </Field>
+              </div>
+              <ErrorMessage
+                name="medications"
+                component="div"
+                className="text-red-500 ml-44"
+              />
+              <div className="flex items-center gap-4">
+                <label htmlFor="Emergency Contact" className="w-40">
+                  Emergency Contact:
+                </label>
+                <Field
+                  name="Emergency Contact"
+                  type="text"
+                  id="Emergency Contact"
+                  className="w-full border p-2 rounded"
+                />
+              </div>
+              <ErrorMessage
+                name="Emergency Contact"
+                component="div"
+                className="text-red-500 ml-44"
+              />
               {/* Start Time */}
               {/* <div className="flex items-center gap-4">
                 <label
