@@ -17,18 +17,15 @@ import {
 } from "@headlessui/react";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineClose } from "react-icons/md";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronRight, FaTooth } from "react-icons/fa";
 import * as Logo from "../../public/logo.jpg";
 import Image from "next/image";
 import { TiThMenuOutline } from "react-icons/ti";
 import Link from "next/link";
+import { services } from "../data/services";
 import { useRouter } from "next/router";
 
-const products = [
-  { name: "General", href: "#" },
-  { name: "Surgical", href: "#" },
-  { name: "Cosmetic", href: "#" },
-];
+const products = services.map((s) => ({ name: s.title, href: `/services/${s.slug}` }));
 const aboutinfo = [
   // { name: 'Contact Us', href: '#' },
   { name: "Our Doctors", href: "/doctors" },
@@ -42,7 +39,18 @@ function classNames(...classes: any[]) {
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  const isHome = router.pathname === "/";
+  const dark = isHome && scrolled; // home page, after scrolling: dark bar
+  const light = !isHome; // inner pages: light bar, so it stands out from dark banners
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("Token1");
@@ -64,15 +72,46 @@ export default function Example() {
   console.log("isLoggedIn", isLoggedIn);
 
   return (
-    <header className="bg-main-color text-white mb-5 fixed top-0 w-full z-20 border-white  border-b ">
+    <header
+      className={`fixed top-0 w-full z-20 transition-colors duration-300 ${
+        dark
+          ? "bg-main-color text-white shadow-lg border-b border-primary-color/40"
+          : light
+          ? "bg-cream/90 text-main-color border-b border-primary-color/25 backdrop-blur-md"
+          : "bg-transparent text-white"
+      }`}
+    >
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-6  lg:px-8 "
+        className="container mx-auto flex items-center justify-between px-6"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <Image className=" w-20 lg:w-32 " src={Logo} alt="" />
+          <a
+            href="/"
+            className={`relative flex items-center no-underline transition-all duration-300 ${
+              light ? "py-2.5 pl-0" : dark ? "py-3 pl-0" : "py-2 pl-5"
+            }`}
+          >
+            <span className="sr-only">Luxury Dental Care</span>
+            <img
+              src={light ? "/logo-dark-tooth.png" : "/logo-tooth.png"}
+              alt=""
+              aria-hidden="true"
+              className={
+                light
+                  ? "relative h-7 w-auto mr-2.5"
+                  : dark
+                  ? "relative h-9 w-auto mr-3"
+                  : "absolute left-0 top-1/2 -translate-y-1/2 w-auto opacity-45 h-16 lg:h-20"
+              }
+            />
+            <img
+              src={light ? "/logo-dark-text.png" : "/logo-text.png"}
+              alt="Luxury Dental Care"
+              className={`relative z-10 w-auto transition-all duration-300 ${
+                light ? "h-6" : dark ? "h-9" : "h-12 lg:h-14"
+              }`}
+            />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -103,20 +142,17 @@ export default function Example() {
         </div>
         <div className="hidden lg:block">
           <div className="flex justify-end items-center">
-            <p className="text-primary-color capitalize">
-              call us now: <span className="text-gray-100">01032946286</span>
-            </p>
           </div>
-          <div className="flex items-center ">
+          <div className={`flex items-center transition-all duration-300 ${light ? "py-0" : dark ? "py-3" : "py-5"}`}>
             <PopoverGroup className="hidden lg:flex lg:gap-x-10">
               <a
                 href=""
-                className="text-md font-semibold leading-6 text-white no-underline"
+                className="text-sm font-normal leading-6 text-inherit no-underline"
               >
                 About
               </a>
               {/* <Popover className="relative">
-                <PopoverButton className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
+                <PopoverButton className="flex items-center gap-x-1 text-sm font-normal leading-6 text-inherit">
                   About
                   <IoIosArrowDown className="h-4 w-4 flex-none text-white" aria-hidden="true" />
 
@@ -155,10 +191,10 @@ export default function Example() {
               </Popover> */}
 
               <Popover className="relative">
-                <PopoverButton className="flex items-center gap-x-1 text-md font-semibold leading-6 text-white">
+                <PopoverButton className="flex items-center gap-x-1 text-sm font-normal leading-6 text-inherit">
                   Services
                   <IoIosArrowDown
-                    className="h-4 w-4 flex-none text-white"
+                    className="h-4 w-4 flex-none text-inherit"
                     aria-hidden="true"
                   />
                 </PopoverButton>
@@ -172,17 +208,17 @@ export default function Example() {
                   leaveFrom="opacity-100 translate-y-0"
                   leaveTo="opacity-0 translate-y-1"
                 >
-                  <PopoverPanel className="absolute -left-8 top-full z-10 mt-3 w-40 max-w-md overflow-hidden rounded-md bg-main-color shadow-lg ring-1 ring-gray-900/5">
+                  <PopoverPanel className="absolute -left-8 top-full z-10 mt-3 w-56 max-w-md overflow-hidden rounded-md bg-white shadow-xl ring-1 ring-gray-900/5">
                     <div className="p-4">
                       {products.map((item) => (
                         <div
                           key={item.name}
-                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-primary-color"
+                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-cream"
                         >
                           <div className="flex-auto">
                             <a
                               href={item.href}
-                              className="block font-semibold text-white no-underline"
+                              className="block font-medium text-main-color no-underline"
                             >
                               {item.name}
                               <span className="absolute inset-0" />
@@ -195,41 +231,42 @@ export default function Example() {
                 </Transition>
               </Popover>
 
-              {/* <a href="#" className="text-md font-semibold leading-6 text-white no-underline">
+              {/* <a href="#" className="text-sm font-normal leading-6 text-inherit no-underline">
                 New Patients
 
                 
               </a> */}
               <a
                 href="/doctors"
-                className="text-md font-semibold leading-6 text-white no-underline"
+                className="text-sm font-normal leading-6 text-inherit no-underline"
               >
                 Our Doctors
               </a>
               <a
                 href="/contact"
-                className="text-md font-semibold leading-6 text-white no-underline"
+                className="text-sm font-normal leading-6 text-inherit no-underline"
               >
                 Contact Us
               </a>
 
               <a
                 href="/register/signIn"
-                className="text-md font-semibold leading-6 text-white no-underline"
+                className="text-sm font-normal leading-6 text-inherit no-underline"
                 onClick={isLoggedIn ? handleLogout : handleLogin}
               >
                 {isLoggedIn ? "Logout" : "Login"}
               </a>
             </PopoverGroup>
-            <button className="hidden btn1 btn-primary1 ms-7">
-              <Link
-                href="/booking"
-                className="text-md font-semibold leading-6 text-white no-underline"
-              >
-                Book Online
-                {/* <span aria-hidden="true">&rarr;</span> */}
-              </Link>
-            </button>
+            <Link
+              href="/booking"
+              className={`ms-10 rounded-full border px-5 py-1.5 text-sm no-underline transition-colors ${
+                light
+                  ? "border-primary-color bg-primary-color text-white hover:bg-dark-primary-color"
+                  : "border-white/60 text-white hover:bg-white hover:text-main-color"
+              }`}
+            >
+              Book Appointment
+            </Link>
           </div>
         </div>
       </nav>
@@ -329,7 +366,7 @@ export default function Example() {
                             <button className=" btn1 btn-primary1 w-full mt-5">
                               <Link
                                 href="/booking"
-                                className="text-md font-semibold leading-6 text-white no-underline"
+                                className="text-sm font-normal leading-6 text-inherit no-underline"
                               >
                                 Book Online
                                 {/* <span aria-hidden="true">&rarr;</span> */}

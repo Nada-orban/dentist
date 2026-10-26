@@ -55,6 +55,90 @@ function DoctorDashboard() {
           </div> */}
         </div>
       </section>
+      <div class="patient-card mt-3">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">
+          Today Appointment
+        </h2>
+
+        <table class="w-full border-separate border-spacing-y-3">
+          <thead>
+            <tr class="text-left text-sm text-gray-500">
+              <th class="px-3">Patient</th>
+              <th class="px-3">Name / Diagnosis</th>
+              <th class="px-3 text-right">Time</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="bg-gray-50 rounded-lg">
+              <td class="px-3 py-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=1"
+                  class="w-10 h-10 rounded-full object-cover"
+                  alt="patient"
+                />
+              </td>
+
+              <td class="px-3 py-3">
+                <p class="font-medium text-gray-800">M.J. Mical</p>
+                <p class="text-sm text-gray-500">Health Checkup</p>
+              </td>
+
+              <td class="px-3 py-3 text-right">
+                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-600">
+                  On Going
+                </span>
+              </td>
+            </tr>
+
+            <tr class="bg-gray-50 rounded-lg">
+              <td class="px-3 py-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=2"
+                  class="w-10 h-10 rounded-full object-cover"
+                  alt="patient"
+                />
+              </td>
+
+              <td class="px-3 py-3">
+                <p class="font-medium text-gray-800">Sanath Deo</p>
+                <p class="text-sm text-gray-500">Health Checkup</p>
+              </td>
+
+              <td class="px-3 py-3 text-right">
+                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-600">
+                  12:30 PM
+                </span>
+              </td>
+            </tr>
+
+            <tr class="bg-gray-50 rounded-lg">
+              <td class="px-3 py-3">
+                <img
+                  src="https://i.pravatar.cc/40?img=3"
+                  class="w-10 h-10 rounded-full object-cover"
+                  alt="patient"
+                />
+              </td>
+
+              <td class="px-3 py-3">
+                <p class="font-medium text-gray-800">Lecara Phanj</p>
+                <p class="text-sm text-gray-500">Report</p>
+              </td>
+
+              <td class="px-3 py-3 text-right">
+                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-600">
+                  01:00 PM
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mt-4 text-sm text-blue-600 font-medium cursor-pointer">
+          See All
+        </div>
+      </div>
     </DashboardLayout>
   );
 }

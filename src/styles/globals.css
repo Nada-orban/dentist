@@ -5,7 +5,7 @@
   @apply lg:flex  lg:justify-center   h-10 px-4 py-2   text-white;
 }
 .btn-primary1 {
-  @apply bg-[#C5B069] hover:bg-dark-primary-color rounded-lg cursor-pointer;
+  @apply bg-primary-color hover:bg-dark-primary-color rounded-full cursor-pointer transition-colors;
 }
 .flexInfoBox {
   @apply grid grid-cols-1 md:grid-cols-2 gap-4 mt-6;
@@ -42,7 +42,7 @@
 }
 
 .phone {
-  color: #C5B069;
+  color: #A88B35;
   font-weight: 500;
   font-size: 14px;
   text-decoration: none;
@@ -90,7 +90,9 @@
 }
 
 body {
-  background-color: rgb(243 244 246 /1);
+  background-color: #F5F4F0;
+  color: #363F40;
+  font-family: Inter, system-ui, sans-serif;
   /* color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -98,4 +100,18 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
+}
+
+h1,
+h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+}
+.eyebrow {
+  @apply text-[11px] uppercase tracking-[0.3em] text-primary-color font-medium;
+}
+.serif-em {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  @apply text-primary-color;
 }

@@ -67,8 +67,8 @@ export default function Home() {
 
 
       </div> */}
-      <Doctors />
       <Services />
+      <Doctors />
       <Feedback />
     </>
   );

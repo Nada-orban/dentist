@@ -39,7 +39,7 @@ function Doctors() {
       } catch (error) {
         console.error(
           "Error fetching AllDoctors:",
-          error.response ? error.response.data : error.message
+          error.response ? error.response.data : error.message,
         );
       }
     };
@@ -48,20 +48,27 @@ function Doctors() {
   }, []);
 
   return (
-    <div className="bg-white my-3 py-4">
-      <div className="container mx-auto ">
-        <h1 className="font-bold my-5">
-          Meet Our <span className="text-primary-color">Doctors</span>
-        </h1>
+    <div className="bg-white py-20">
+      <div className="container mx-auto px-6">
+        <p className="eyebrow mb-3">Our Team</p>
+        <h2 className="text-4xl mb-10">
+          Meet Our <span className="serif-em">Doctors</span>
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-4 md:mx-auto ">
           {allDoctors?.map((doctor) => {
             return (
-              <div>
-                <img
-                  src={`${doctor.profile_image}`}
-                  alt=""
-                  className="rounded-md h-[333px] "
-                />
+              <div key={doctor.id}>
+                {doctor.profile_image ? (
+                  <img
+                    src={doctor.profile_image}
+                    alt={doctor.full_name}
+                    className="rounded-2xl h-[333px] w-full object-cover"
+                  />
+                ) : (
+                  <div className="rounded-2xl h-[333px] w-full bg-cream flex items-center justify-center font-display text-6xl text-primary-color">
+                    {doctor.full_name?.charAt(0)}
+                  </div>
+                )}
                 <div className="mt-3">
                   <h3 className="font-bold">{doctor.full_name}</h3>
                   <p className="text-gray-500">{doctor.specialization}</p>

@@ -1,29 +1,70 @@
-'use client'
-import React from 'react'
-import { FaPhoneAlt, FaArrowRight } from "react-icons/fa";
+"use client";
+import React from "react";
+import Link from "next/link";
+import { FaPhoneAlt, FaArrowRight, FaTooth, FaUserMd, FaRegHeart, FaRegSmile } from "react-icons/fa";
+
+const features = [
+  { icon: FaTooth, title: "Advanced Technology", text: "For precise & comfortable care" },
+  { icon: FaUserMd, title: "Experienced Team", text: "Skilled & caring professionals" },
+  { icon: FaRegHeart, title: "Personalized Treatment", text: "Designed for your unique needs" },
+  { icon: FaRegSmile, title: "Comfortable Environment", text: "Relax. We'll take care of you" },
+];
 
 function Landing() {
   return (
-    <div className='relative  overflow-hidden'>
-      <div className='absolute bottom-14 md:bottom-1/4 left-3 md:left-10 z-10 text-white flex flex-col gap-3'>
-        <h1 className='font-bold text-md md:text-3xl '>Your Smile Starts Here</h1>
-        <div className='flex  flex-col justify-start '>
-          <button className='flex justify-start items-start gap-2  md:gap-3 '>
-            <div className='border-2 border-white p-1 md:p-2   rounded-full'><FaPhoneAlt /></div>
-            <div><p className='text-lg md:text-2xl  '> 01032946286</p></div>
-          </button>
+    <>
+      <section className="relative min-h-[100vh] flex items-center overflow-hidden bg-main-color">
+        <img
+          src="/images/hero-chair.jpg"
+          alt="Treatment room at Luxury Dental Clinic"
+          className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-main-color/95 via-main-color/70 to-main-color/10" />
+
+        <div className="relative z-10 container mx-auto px-6 pt-28 pb-20">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 mb-6">
+            Healthy smiles · Brighter tomorrows
+          </p>
+          <h1 className="text-white text-4xl md:text-6xl leading-tight max-w-2xl">
+            Modern Dental Care for a <span className="serif-em">Healthier You</span>
+          </h1>
+          <p className="text-white/85 mt-6 max-w-md leading-relaxed">
+            Dental implants, periodontics and cosmetic dentistry. Specialized
+            care, trusted results.
+          </p>
+          <div className="flex flex-wrap items-center gap-4 mt-10">
+            <Link
+              href="/booking"
+              className="group inline-flex items-center gap-3 bg-primary-color hover:bg-dark-primary-color text-white no-underline rounded-full px-7 py-3 text-sm font-medium transition-colors"
+            >
+              Book an Appointment
+              <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+            </Link>
+            <a
+              href="tel:01032946286"
+              className="inline-flex items-center gap-3 text-white no-underline border border-white/50 hover:bg-white/10 rounded-full px-6 py-3 text-sm transition-colors"
+            >
+              <FaPhoneAlt className="text-xs" /> 01032946286
+            </a>
+          </div>
         </div>
-        <button className='bg-[#C5B069]  h-10 px-4 py-2 w-fit rounded-full text-start  gap-2 overflow-hidden '>
-          <p className='flex justify-start items-center gap-3 group  '>Book Here<span className='  group-hover:transform group-hover:transition-transform group-hover:duration-500  group-hover:translate-x-12'><FaArrowRight /></span></p>
+      </section>
 
-        </button>
-      </div>
-      <img src="/images/pexels-fr3nks-305564.jpg" alt='' className='w-full h-[100vh]  object-cover relative -z-10 md:hidden ' />
-      <video src={require('../../public/videos/original_Practice_Tour_V1-HB.mp4')} autoPlay muted loop className='w-full   h-auto object-cover relative -z-10 hidden md:block ' />
-      <div className="absolute inset-0 bg-black bg-opacity-25  "></div>
-
-    </div>
-  )
+      <section className="bg-cream border-b border-main-color/10">
+        <div className="container mx-auto px-6 py-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map(({ icon: Icon, title, text }) => (
+            <div key={title} className="flex items-start gap-3">
+              <Icon className="text-primary-color text-2xl mt-1 shrink-0" />
+              <div>
+                <p className="font-semibold text-sm mb-0">{title}</p>
+                <p className="text-xs text-main-color/60 mb-0">{text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
+  );
 }
 
-export default Landing
+export default Landing;

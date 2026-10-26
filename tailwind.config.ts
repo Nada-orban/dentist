@@ -8,12 +8,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Playfair Display"', "Georgia", "serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+      },
       colors: {
-        "primary-color": "#c5b069",
-        "dark-primary-color": "#a18c45",
+        "primary-color": "#A88B35",
+        "dark-primary-color": "#8E742A",
         "secondary-color": "#C0C1C5",
         "main-color": "#363F40",
         "light-main-color": "#9AA9AA",
+        "cream": "#F5F4F0",
 
       },
       backgroundImage: {

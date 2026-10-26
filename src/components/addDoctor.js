@@ -103,7 +103,7 @@ function addDoctor() {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50   flex w-full items-center justify-center p-4 overflow-y-auto  pt-10">
       <DialogPanel className=" space-y-4 border bg-white px-12 pb-12 mt-40 ">
-        <DialogTitle className="font-bold my-10">Add Doctor:</DialogTitle>
+        <DialogTitle className="font-bold my-10 pt-4">Add Doctor:</DialogTitle>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -244,7 +244,7 @@ function addDoctor() {
                   onChange={(e) => {
                     const selected = Array.from(
                       e.target.selectedOptions,
-                      (opt) => opt.value
+                      (opt) => opt.value,
                     );
                     setFieldValue("available_days", selected);
                   }}
@@ -317,7 +317,7 @@ function addDoctor() {
                   onChange={(event) => {
                     setFieldValue(
                       "profile_image",
-                      event.currentTarget.files[0]
+                      event.currentTarget.files[0],
                     );
                   }}
                 />

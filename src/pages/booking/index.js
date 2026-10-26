@@ -22,7 +22,7 @@ const domain = `${API_URL}`;
 const createReservstionUrl = `${domain}/api/reservation/appointments/book/`;
 const getReservstionUrl = `${domain}/api/reservation/appointments/`;
 const getDoctorsUrl = `${domain}/api/doctors/`;
-const getBookedSlotsUrl = `${domain}/api/booked_slots/`;
+const getBookedSlotsUrl = `${domain}/api/reservation/booked_slots/`;
 
 function index() {
   const [reservationsData, setReservationsData] = useState("");
@@ -46,7 +46,7 @@ function index() {
       } catch (error) {
         console.error(
           "Error fetching AllDoctors:",
-          error.response ? error.response.data : error.message
+          error.response ? error.response.data : error.message,
         );
       }
     };
@@ -94,7 +94,7 @@ function index() {
         },
         {
           headers: { Authorization: localStorage.getItem("Token1") },
-        }
+        },
       );
       console.log("Appointment booked successfully:", response.data);
       setFinished(true);
@@ -168,20 +168,20 @@ function index() {
                             useEffect(() => {
                               if (selectedDoctor && values.appointment_date) {
                                 fetch(
-                                  `${getBookedSlotsUrl}${selectedDoctor}/${format(
+                                  `${getBookedSlotsUrl}${selectedDoctor.id}/${format(
                                     values.appointment_date,
-                                    "yyyy-MM-dd"
-                                  )}`
+                                    "yyyy-MM-dd",
+                                  )}`,
                                 )
                                   .then((res) => res.json())
                                   .then((bookedTimes) => {
                                     const allSlots = generateTimeSlots(
-                                      doctor.start_time,
-                                      doctor.end_time,
-                                      60
+                                      selectedDoctor.start_time,
+                                      selectedDoctor.end_time,
+                                      60,
                                     );
                                     const availableSlots = allSlots.filter(
-                                      (time) => !bookedTimes.includes(time)
+                                      (time) => !bookedTimes.includes(time),
                                     );
                                     setSlots(availableSlots);
                                   });
