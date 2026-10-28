@@ -1,3 +1,13 @@
+// Old address: the patients list now lives at /dashboard/patient.
+export default function PatientsRedirect() {
+  return null;
+}
+
+export async function getServerSideProps() {
+  return { redirect: { destination: "/dashboard/patient", permanent: false } };
+}
+
+// ---- old draft (kept for reference) ----
 // import React, { use, useEffect } from "react";
 // import DashboardLayout from "../../components/DashboardLayout";
 // import API_URL from "../../api/config";
