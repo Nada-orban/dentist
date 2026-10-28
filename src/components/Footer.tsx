@@ -3,11 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { FaArrowRight, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa'
 import { services } from '../data/services'
-
-// Edit the clinic details here.
-const PHONE = '01032946286'
-const ADDRESS =
-  '21 Museum Street, in front of Al Mahrousa Tourism, second floor, Tanta, Egypt'
+import { PHONE, ADDRESS, MAPS_LINK } from '../data/clinic'
 
 const quickLinks = [
   { name: 'Home', href: '/' },
@@ -95,7 +91,7 @@ export default function Footer() {
               <li className="flex gap-3 text-sm text-white/70 leading-relaxed">
                 <FaMapMarkerAlt className="text-primary-color mt-1 shrink-0" />
                 <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`}
+                  href={MAPS_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={linkClass}

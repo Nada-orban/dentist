@@ -102,7 +102,7 @@ export default function ServicePage({ service }) {
               <h2 className="text-3xl mb-6">What to expect</h2>
               <ol className="list-none p-0 space-y-6">
                 {service.steps.map((step, i) => (
-                  <li key={step.title} className="flex gap-5">
+                  <li key={step.title} className="flex gap-x-5">
                     <span className="shrink-0 w-10 h-10 rounded-full bg-main-color text-white flex items-center justify-center font-display">
                       {i + 1}
                     </span>
