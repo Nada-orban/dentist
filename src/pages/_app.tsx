@@ -14,7 +14,9 @@ import Footer from '@/components/Footer';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const hideLayout = router.pathname.startsWith("/dashboard");
+  // Dashboard and sign in / sign up pages have their own layout (no site navbar and footer).
+  const hideLayout =
+    router.pathname.startsWith("/dashboard") || router.pathname.startsWith("/register");
   return <>
     <Head>
       <meta property="og:title" content="Singularity" />

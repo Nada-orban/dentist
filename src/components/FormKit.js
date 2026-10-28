@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import { Field, ErrorMessage, useField } from "formik";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const inputClass =
   "w-full rounded-xl border border-main-color/15 bg-cream px-4 py-2.5 text-sm text-main-color outline-none transition placeholder:text-main-color/35 focus:border-primary-color focus:ring-2 focus:ring-primary-color/30";
@@ -200,3 +200,30 @@ export const FormFooter = ({ onCancel, submitting, submitLabel = "Save", error }
     </div>
   </div>
 );
+
+// Password box with a show/hide eye.
+export const PasswordField = ({ name, label, required, hint, full, autoComplete, placeholder }) => {
+  const [show, setShow] = useState(false);
+  return (
+    <Shell name={name} label={label} required={required} hint={hint} full={full}>
+      <div className="relative">
+        <Field
+          id={name}
+          name={name}
+          type={show ? "text" : "password"}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+          className={`${inputClass} pr-12`}
+        />
+        <button
+          type="button"
+          aria-label={show ? "Hide password" : "Show password"}
+          onClick={() => setShow((v) => !v)}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-main-color/50 hover:text-main-color"
+        >
+          {show ? <FaEyeSlash /> : <FaEye />}
+        </button>
+      </div>
+    </Shell>
+  );
+};

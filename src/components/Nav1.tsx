@@ -51,6 +51,7 @@ export default function Example() {
       setMenuClosing(false);
     }, 300);
   };
+  //login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
@@ -80,7 +81,7 @@ export default function Example() {
     router.push("/register/signIn"); // or homepage
   };
   const handleLogin = () => {
-    router.push("/login");
+    router.push("register/signIn");
   };
   console.log("isLoggedIn", isLoggedIn);
 
@@ -193,11 +194,6 @@ export default function Example() {
                 </Transition>
               </Popover>
 
-              {/* <a href="#" className="text-base font-normal leading-6 text-inherit no-underline">
-                New Patients
-
-                
-              </a> */}
               <a
                 href="/doctors"
                 className="text-base font-normal leading-6 text-inherit no-underline"
@@ -339,102 +335,10 @@ export default function Example() {
               >
                 Book Appointment
               </Link>
-              {/* <div className="flex items-center justify-between text-sm">
-                <a href="tel:01032946286" className="text-white/80 no-underline">
-                  01032946286
-                </a>
-                {isLoggedIn ? (
-                  <button
-                    type="button"
-                    className="text-white/80"
-                    onClick={() => {
-                      closeMenu();
-                      handleLogout();
-                    }}
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <Link
-                    href="/register/signIn"
-                    onClick={() => closeMenu()}
-                    className="text-white/80 no-underline"
-                  >
-                    Login
-                  </Link>
-                )}
-              </div> */}
             </div>
           </DialogPanel>
         </div>
       </Dialog>
-      {/* <Dialog as="div" className="hidden " open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10" />
-        <DialogPanel className="fixed bottom-0 top-20 right-0 z-30 w-full overflow-y-auto bg-main-color px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10     ">
-      
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-primary-color0/10">
-              <div className="space-y-2 py-6">
-                <Disclosure as="div" className="-mx-3">
-                  {({ open }) => (
-                    <>
-
-                      <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-primary-color">
-                        About
-                      
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 space-y-2">
-                        {aboutinfo?.map((item) => (
-                          <DisclosureButton
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                        ))}
-                      </DisclosurePanel>
-                      <DisclosureButton className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-white hover:bg-gray-50">
-                        Services
-                      
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 space-y-2">
-                        {products.map((item) => (
-                          <DisclosureButton
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-md font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
-                          >
-                            {item.name}
-                          </DisclosureButton>
-                        ))}
-                      </DisclosurePanel>
-                    </>
-                  )}
-                </Disclosure>
-
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
-                >
-                  New Patients
-                </a>
-
-              </div>
-              <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-50 no-underline"
-                >
-                  Log in
-                </a>
-              </div>
-            </div>
-          </div>
-        </DialogPanel>
-    </Dialog> */}
     </header>
   );
 }
