@@ -5,7 +5,7 @@ import { FaArrowLeft, FaCheck } from "react-icons/fa";
 
 const perks = ["Book appointments in a few clicks", "Choose your doctor and your time", "Friendly, specialized care"];
 
-export default function AuthLayout({ children }) {
+export default function AuthLayout({ children, wide = false }) {
   return (
     <div className="min-h-screen bg-cream lg:grid lg:grid-cols-2">
       <aside className="relative hidden overflow-hidden bg-main-color text-white lg:flex lg:flex-col lg:justify-between lg:p-12">
@@ -39,7 +39,7 @@ export default function AuthLayout({ children }) {
       </aside>
 
       <main className="flex min-h-screen flex-col">
-        <div className="flex items-center justify-between px-6 py-5 sm:px-10">
+        <div className="flex items-center justify-between px-6 py-4 sm:px-10">
           <Link href="/" className="lg:hidden">
             <img src="/logo-dark-text.png" alt="Luxury Dental Care" className="h-8 w-auto" />
           </Link>
@@ -50,8 +50,8 @@ export default function AuthLayout({ children }) {
             <FaArrowLeft size={11} /> Back to website
           </Link>
         </div>
-        <div className="flex flex-1 items-center justify-center px-6 pb-14 pt-2 sm:px-10">
-          <div className="w-full max-w-md">{children}</div>
+        <div className="flex flex-1 items-center justify-center px-6 pb-8 pt-0 sm:px-10">
+          <div className={`w-full ${wide ? "max-w-xl" : "max-w-md"}`}>{children}</div>
         </div>
       </main>
     </div>

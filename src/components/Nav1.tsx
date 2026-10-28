@@ -127,7 +127,7 @@ export default function Example() {
                   ? "h-7 sm:h-6 "
                   : dark
                     ? "h-7 sm:h-8 xl:h-9"
-                    : "h-7 sm:h-11 xl:h-14"
+                    : "h-7 sm:h-11 xl:h-12"
               }`}
             />
           </a>
@@ -154,10 +154,10 @@ export default function Example() {
               </a>
 
               <Popover className="relative">
-                <PopoverButton className="flex items-center gap-x-1 text-base font-normal leading-6 text-inherit">
+                <PopoverButton className="group flex items-center gap-x-1 text-base font-normal leading-6 text-inherit outline-none">
                   Services
                   <IoIosArrowDown
-                    className="h-4 w-4 flex-none text-inherit"
+                    className="h-4 w-4 flex-none text-inherit transition-transform duration-200 group-data-[open]:rotate-180"
                     aria-hidden="true"
                   />
                 </PopoverButton>
@@ -165,31 +165,53 @@ export default function Example() {
                 <Transition
                   as={Fragment}
                   enter="transition ease-out duration-200"
-                  enterFrom="opacity-0 translate-y-1"
+                  enterFrom="opacity-0 translate-y-2"
                   enterTo="opacity-100 translate-y-0"
                   leave="transition ease-in duration-150"
                   leaveFrom="opacity-100 translate-y-0"
-                  leaveTo="opacity-0 translate-y-1"
+                  leaveTo="opacity-0 translate-y-2"
                 >
-                  <PopoverPanel className="absolute -left-8 top-full z-10 mt-3 w-56 max-w-md overflow-hidden rounded-md bg-white shadow-xl ring-1 ring-gray-900/5">
-                    <div className="p-4">
-                      {products.map((item) => (
-                        <div
-                          key={item.name}
-                          className="group relative flex items-center gap-x-6 rounded-lg p-4 text-base leading-6 hover:bg-cream"
-                        >
-                          <div className="flex-auto">
-                            <a
-                              href={item.href}
-                              className="block font-medium text-main-color no-underline"
+                  <PopoverPanel className="absolute -left-24 top-full z-30 mt-5 w-[32rem] rounded-3xl bg-white p-3 text-main-color shadow-2xl ring-1 ring-main-color/10">
+                    {({ close }) => (
+                      <>
+                        {/* little arrow pointing at the button */}
+                        <span
+                          aria-hidden="true"
+                          className="absolute -top-1.5 left-28 h-3 w-3 rotate-45 border-l border-t border-main-color/10 bg-white"
+                        />
+                        <div className="grid grid-cols-2 gap-1">
+                          {services.map((s) => (
+                            <Link
+                              key={s.slug}
+                              href={`/services/${s.slug}`}
+                              onClick={() => close()}
+                              className="group/item flex items-center rounded-2xl px-4 py-3 text-main-color no-underline transition-colors hover:bg-cream"
                             >
-                              {item.name}
-                              <span className="absolute inset-0" />
-                            </a>
-                          </div>
+                              <span className="min-w-0">
+                                <span className="block text-sm font-semibold leading-tight transition-colors group-hover/item:text-primary-color">
+                                  {s.title}
+                                </span>
+                                <span className="mt-0.5 line-clamp-2 block text-xs leading-snug text-main-color/60">
+                                  {s.summary}
+                                </span>
+                              </span>
+                            </Link>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                        <div className="mt-2 flex items-center justify-between rounded-2xl bg-cream px-4 py-3">
+                          <span className="text-xs text-main-color/60">
+                            Not sure which treatment you need?
+                          </span>
+                          <Link
+                            href="/services"
+                            onClick={() => close()}
+                            className="inline-flex items-center gap-2 text-sm font-medium text-primary-color no-underline hover:text-dark-primary-color"
+                          >
+                            View all services <span aria-hidden="true">→</span>
+                          </Link>
+                        </div>
+                      </>
+                    )}
                   </PopoverPanel>
                 </Transition>
               </Popover>
@@ -217,9 +239,9 @@ export default function Example() {
             </PopoverGroup>
             <Link
               href="/booking"
-              className={`ms-6 xl:ms-10 rounded-full border px-5 py-1.5 text-base no-underline transition-colors  ${
+              className={`ms-6 xl:ms-10 rounded-full border px-5 py-1.5 text-base no-underline transition-colors   ${
                 light
-                  ? "border-primary-color bg-primary-color text-white hover:bg-dark-primary-color"
+                  ? "border-primary-color bg-primary-color text-white hover:bg-dark-primary-color "
                   : "border-primary-color text-white hover:bg-dark-primary-color hover:text-main-color"
               }`}
             >

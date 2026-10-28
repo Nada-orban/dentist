@@ -1,19 +1,42 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FaPhoneAlt, FaArrowRight, FaTooth, FaUserMd, FaRegHeart, FaRegSmile } from "react-icons/fa";
+import {
+  FaPhoneAlt,
+  FaArrowRight,
+  FaTooth,
+  FaUserMd,
+  FaRegHeart,
+  FaRegSmile,
+} from "react-icons/fa";
 
 const features = [
-  { icon: FaTooth, title: "Advanced Technology", text: "For precise & comfortable care" },
-  { icon: FaUserMd, title: "Experienced Team", text: "Skilled & caring professionals" },
-  { icon: FaRegHeart, title: "Personalized Treatment", text: "Designed for your unique needs" },
-  { icon: FaRegSmile, title: "Comfortable Environment", text: "Relax. We'll take care of you" },
+  {
+    icon: FaTooth,
+    title: "Advanced Technology",
+    text: "For precise & comfortable care",
+  },
+  {
+    icon: FaUserMd,
+    title: "Experienced Team",
+    text: "Skilled & caring professionals",
+  },
+  {
+    icon: FaRegHeart,
+    title: "Personalized Treatment",
+    text: "Designed for your unique needs",
+  },
+  {
+    icon: FaRegSmile,
+    title: "Comfortable Environment",
+    text: "Relax. We'll take care of you",
+  },
 ];
 
 function Landing() {
   return (
     <>
-      <section className="relative min-h-[100vh] flex items-center overflow-hidden bg-main-color">
+      <section className="relative min-h-[100vh] flex items-center overflow-hidden bg-main-color ">
         <img
           src="/images/hero-chair.jpg"
           alt="Treatment room at Luxury Dental Clinic"
@@ -21,12 +44,13 @@ function Landing() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-main-color/95 via-main-color/70 to-main-color/10" />
 
-        <div className="relative z-10 container mx-auto px-6 pt-28 pb-20">
+        <div className="relative z-10 container mx-auto px-6 pt-40 pb-20">
           <p className="text-[11px] uppercase tracking-[0.3em] text-white/80 mb-6">
             Healthy smiles · Brighter tomorrows
           </p>
           <h1 className="text-white text-4xl md:text-6xl leading-tight max-w-2xl">
-            Modern Dental Care for a <span className="serif-em">Healthier You</span>
+            Modern Dental Care for a{" "}
+            <span className="serif-em">Healthier You</span>
           </h1>
           <p className="text-white/85 mt-6 max-w-md leading-relaxed">
             Dental implants, periodontics and cosmetic dentistry. Specialized
