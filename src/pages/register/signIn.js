@@ -59,6 +59,14 @@ function SignIn() {
             <Form noValidate className="space-y-5">
               <TextField name="username" label="Username" autoComplete="username" autoFocus />
               <PasswordField name="password" label="Password" autoComplete="current-password" />
+              <div className="-mt-3 text-right">
+                <Link
+                  href="/register/forgotPassword"
+                  className="text-sm text-main-color/60 no-underline hover:text-primary-color"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               {error && (
                 <p className="mb-0 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>
               )}
