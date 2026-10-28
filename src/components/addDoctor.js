@@ -1,354 +1,199 @@
-import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState } from "react";
+import { Formik, Form, useField } from "formik";
 import * as Yup from "yup";
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
 import axios from "axios";
+import { FaCamera } from "react-icons/fa";
 import API_URL from "../pages/api/config";
+import {
+  FormModal,
+  FormBody,
+  FormFooter,
+  SectionTitle,
+  TextField,
+  SelectField,
+  TextAreaField,
+  DaysField,
+  Shell,
+  apiErrorText,
+} from "./FormKit";
 
 const domain = `${API_URL}`;
-const getDoctorsUrl = `${domain}/api/doctors/`;
 const addDoctorUrl = `${domain}/api/doctors/create/`;
-const editDoctorUrl = `${domain}/api/doctors/`;
-const deleteDoctorUrl = `${domain}/api/doctors/`;
+const doctorUrl = (id) => `${domain}/api/doctors/${id}/`;
 
-function addDoctor() {
-  const initialValues = {
-    full_name: "",
-    email: "",
-    phone: "",
-    gender: "",
-    specialization: "",
-    experience_years: "",
-    available_days: [],
-    start_time: "",
-    end_time: "",
-    bio: "",
-    is_active: "",
-    profile_image: null,
-  };
+const emptyValues = {
+  full_name: "",
+  email: "",
+  phone: "",
+  gender: "",
+  specialization: "",
+  experience_years: "",
+  available_days: [],
+  start_time: "",
+  end_time: "",
+  bio: "",
+  is_active: true,
+  profile_image: null,
+};
 
-  const validationSchema = Yup.object({
-    full_name: Yup.string().required("Full name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    phone: Yup.string().required("Phone number is required"),
-    gender: Yup.string()
-      .oneOf(["Male", "Female"])
-      .required("Gender is required"),
-    specialization: Yup.string().required("Specialization is required"),
-    experience_years: Yup.number().min(0, "Must be 0 or more").nullable(),
-    // available_days: Yup.string().required("Please specify available days"),
-    start_time: Yup.string(),
-    end_time: Yup.string(),
-    bio: Yup.string(),
-    // profile_image is optional
-  });
+// "10:52:00" -> "10:52" (what a time input expects)
+const hhmm = (t) => (t ? `${t}`.slice(0, 5) : "");
 
-  const handleSubmit = async (values) => {
+const valuesFromDoctor = (d) => ({
+  full_name: d.full_name || "",
+  email: d.email || "",
+  phone: d.phone || "",
+  gender: d.gender || "",
+  specialization: d.specialization || "",
+  experience_years: d.experience_years ?? "",
+  available_days: d.available_days || [],
+  start_time: hhmm(d.start_time),
+  end_time: hhmm(d.end_time),
+  bio: d.bio || "",
+  is_active: d.is_active !== false,
+  profile_image: null, // only set when a new photo is chosen
+});
+
+const validationSchema = Yup.object({
+  full_name: Yup.string().required("Full name is required"),
+  email: Yup.string().email("Enter a valid email").required("Email is required"),
+  phone: Yup.string().required("Phone number is required"),
+  gender: Yup.string().oneOf(["Male", "Female"]).required("Please choose a gender"),
+  specialization: Yup.string().required("Specialization is required"),
+  experience_years: Yup.number().typeError("Enter a number").min(0, "Must be 0 or more").nullable(),
+  available_days: Yup.array().min(1, "Pick at least one day"),
+});
+
+// Photo picker with a round preview. `current` is the photo the doctor already has.
+const PhotoField = ({ name, current }) => {
+  const [, , helpers] = useField(name);
+  const [preview, setPreview] = useState(current || "");
+  return (
+    <Shell
+      label="Profile photo"
+      hint={current ? "Choose a new photo to replace the current one." : "Optional. JPG or PNG."}
+      full
+    >
+      <div className="flex items-center gap-4">
+        <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-cream text-main-color/30 ring-1 ring-main-color/10">
+          {preview ? <img src={preview} alt="" className="h-full w-full object-cover" /> : <FaCamera size={22} />}
+        </div>
+        <label className="cursor-pointer rounded-full border border-main-color/20 px-5 py-2 text-sm text-main-color transition-colors hover:border-primary-color hover:text-primary-color">
+          {preview ? "Change photo" : "Choose photo"}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.currentTarget.files[0];
+              if (!file) return;
+              helpers.setValue(file);
+              setPreview(URL.createObjectURL(file));
+            }}
+          />
+        </label>
+      </div>
+    </Shell>
+  );
+};
+
+// Add a doctor, or edit one when a `doctor` is passed in.
+// onClose: close the pop-up. onSaved(doctor): called after a successful save.
+function AddDoctor({ doctor, onClose, onSaved }) {
+  const editing = Boolean(doctor);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setError("");
     try {
       const formData = new FormData();
-      // Append all fields from your form (assuming you have them in a `values` object)
-      formData.append("full_name", values.full_name);
-      formData.append("email", values.email);
-      formData.append("phone", values.phone);
+      formData.append("full_name", values.full_name.trim());
+      formData.append("email", values.email.trim());
+      formData.append("phone", values.phone.trim());
       formData.append("gender", values.gender);
-      formData.append("specialization", values.specialization);
-      formData.append("experience_years", values.experience_years);
-      formData.append("start_time", values.start_time); // "HH:MM" format
-      formData.append("end_time", values.end_time); // "HH:MM" format
+      formData.append("specialization", values.specialization.trim());
+      if (values.experience_years !== "") formData.append("experience_years", values.experience_years);
+      if (values.start_time) formData.append("start_time", values.start_time);
+      if (values.end_time) formData.append("end_time", values.end_time);
       formData.append("bio", values.bio);
-      formData.append("is_active", values.is_active ? "true" : "false"); // true or false
+      formData.append("is_active", values.is_active ? "true" : "false");
+      values.available_days.forEach((day) => formData.append("available_days", day));
+      // Only send a photo if a new one was chosen (otherwise the current one is kept).
+      if (values.profile_image) formData.append("profile_image", values.profile_image);
 
-      if (values.available_days) {
-        values.available_days.forEach((day) => {
-          formData.append("available_days", day);
-        });
-      }
-
-      // If there's a profile image, make sure it's a File object
-      if (values.profile_image) {
-        formData.append("profile_image", values.profile_image);
-      }
-      console.log("FormData entries:", [...formData.entries()]);
-
-      console.log("Submitting form data:", values);
-
-      await axios
-        .post(addDoctorUrl, formData, {
-          headers: {
-            Authorization: localStorage.getItem("Token1"),
-          },
-        })
-        .then((res) => console.log(res));
-      window.location.reload();
+      const config = { headers: { Authorization: localStorage.getItem("Token1") } };
+      const res = editing
+        ? await axios.patch(doctorUrl(doctor.id), formData, config)
+        : await axios.post(addDoctorUrl, formData, config);
+      if (onSaved) onSaved(res.data);
+      else window.location.reload();
     } catch (err) {
-      if (err.response) {
-        console.group("🛑 500 Response");
-        console.error("Status:", err.response.status);
-        console.error("Headers:", err.response.headers);
-        console.error("Body:", err.response.data);
-        console.groupEnd();
-      } else if (err.request) {
-        console.error("No response—request was:", err.request);
-      } else {
-        console.error("Setup error:", err.message);
-      }
+      setError(apiErrorText(err));
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50   flex w-full items-center justify-center p-4 overflow-y-auto  pt-10">
-      <DialogPanel className=" space-y-4 border bg-white px-12 pb-12 mt-40 ">
-        <DialogTitle className="font-bold my-10 pt-4">Add Doctor:</DialogTitle>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ setFieldValue, values }) => (
-            <Form encType="multipart/form-data" className="space-y-4">
-              {/* Full Name */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="full_name" className="w-40">
-                  Full Name:
-                </label>
-                <Field
-                  name="full_name"
-                  type="text"
-                  id="full_name"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <ErrorMessage
-                name="full_name"
-                component="div"
-                className="text-red-500 ml-44"
-              />
+    <FormModal
+      eyebrow="Team"
+      title={editing ? "Edit Doctor" : "Add Doctor"}
+      subtitle={
+        editing
+          ? `Update ${doctor.full_name}'s details. Fields marked * are required.`
+          : "Add a doctor so patients can book with them. Fields marked * are required."
+      }
+      onClose={onClose}
+    >
+      <Formik
+        initialValues={editing ? valuesFromDoctor(doctor) : emptyValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, values, setFieldValue }) => (
+          <Form className="flex min-h-0 flex-1 flex-col">
+            <FormBody>
+              <SectionTitle>Profile</SectionTitle>
+              <PhotoField name="profile_image" current={editing ? doctor.profile_image : ""} />
+              <TextField name="full_name" label="Full name" required full />
+              <SelectField name="gender" label="Gender" required>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </SelectField>
+              <TextField name="specialization" label="Specialization" required placeholder="e.g. Orthodontist" />
+              <TextField name="experience_years" label="Years of experience" type="number" min="0" />
+              <TextField name="phone" label="Phone" type="tel" required />
+              <TextField name="email" label="Email" type="email" required full />
+              <TextAreaField name="bio" label="Short bio" placeholder="A few lines patients will read about the doctor" />
 
-              {/* Email */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="email" className="w-40">
-                  Email:
+              <SectionTitle>Availability</SectionTitle>
+              <DaysField name="available_days" label="Working days" />
+              <TextField name="start_time" label="Starts at" type="time" />
+              <TextField name="end_time" label="Ends at" type="time" />
+              <div className="sm:col-span-2">
+                <label className="flex cursor-pointer items-center gap-3 text-sm text-main-color">
+                  <input
+                    type="checkbox"
+                    checked={values.is_active}
+                    onChange={(e) => setFieldValue("is_active", e.target.checked)}
+                    className="h-5 w-5 rounded border-main-color/30 accent-primary-color checked:!border-primary-color checked:!bg-primary-color focus:!ring-primary-color/40"
+                  />
+                  Available for bookings
                 </label>
-                <Field
-                  name="email"
-                  type="email"
-                  id="email"
-                  className="w-full border p-2 rounded"
-                />
               </div>
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Phone */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="phone" className="w-40">
-                  Phone:
-                </label>
-                <Field
-                  name="phone"
-                  type="text"
-                  id="phone"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <ErrorMessage
-                name="phone"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Gender */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="gender" className="w-40">
-                  Gender:
-                </label>
-                <Field
-                  as="select"
-                  name="gender"
-                  id="gender"
-                  className="w-full border p-2 rounded"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </Field>
-              </div>
-              <ErrorMessage
-                name="gender"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Specialization */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="specialization" className="w-40">
-                  Specialization:
-                </label>
-                <Field
-                  name="specialization"
-                  type="text"
-                  id="specialization"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <ErrorMessage
-                name="specialization"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Experience */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="experience_years" className="w-40">
-                  Experience (years):
-                </label>
-                <Field
-                  name="experience_years"
-                  type="number"
-                  id="experience_years"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <ErrorMessage
-                name="experience_years"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Available Days */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="available_days" className="w-40">
-                  Available Days:
-                </label>
-                {/* <Field
-                  name="available_days"
-                  type="text"
-                  id="available_days"
-                  placeholder="e.g., Monday, Wednesday"
-                  className="w-full border p-2 rounded"
-                /> */}
-                <Field
-                  multiple={true}
-                  as="select"
-                  name="available_days"
-                  id="available_days"
-                  className="w-full border p-2 rounded"
-                  onChange={(e) => {
-                    const selected = Array.from(
-                      e.target.selectedOptions,
-                      (opt) => opt.value,
-                    );
-                    setFieldValue("available_days", selected);
-                  }}
-                >
-                  <option value="">Select Day</option>
-                  <option value="Monday">Monday</option>
-                  <option value="Tuesday">Tuesday</option>
-                  <option value="Wednesday">Wednesday</option>
-                  <option value="Thursday">Thursday</option>
-                  <option value="Friday">Friday</option>
-                  <option value="Saturday">Saturday</option>
-                  <option value="Sunday">Sunday</option>
-                </Field>
-              </div>
-              <ErrorMessage
-                name="available_days"
-                component="div"
-                className="text-red-500 ml-44"
-              />
-
-              {/* Start Time */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="start_time" className="w-40">
-                  Start Time:
-                </label>
-                <Field
-                  name="start_time"
-                  type="time"
-                  id="start_time"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-
-              {/* End Time */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="end_time" className="w-40">
-                  End Time:
-                </label>
-                <Field
-                  name="end_time"
-                  type="time"
-                  id="end_time"
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-
-              {/* Bio */}
-              <div className="flex items-start gap-4">
-                <label htmlFor="bio" className="w-40 pt-2">
-                  Bio:
-                </label>
-                <Field
-                  name="bio"
-                  as="textarea"
-                  id="bio"
-                  className="w-full border p-2 rounded h-24"
-                />
-              </div>
-
-              {/* Profile Image */}
-              <div className="flex items-center gap-4">
-                <label htmlFor="profile_image" className="w-40">
-                  Profile Image:
-                </label>
-                <input
-                  name="profile_image"
-                  type="file"
-                  id="profile_image"
-                  className="w-full"
-                  onChange={(event) => {
-                    setFieldValue(
-                      "profile_image",
-                      event.currentTarget.files[0],
-                    );
-                  }}
-                />
-              </div>
-
-              {/* Active */}
-              <div className="flex items-center gap-4  ">
-                <label htmlFor="is_active" className="w-40">
-                  Active:
-                </label>
-                <Field
-                  type="checkbox"
-                  name="is_active"
-                  id="is_active"
-                  checked={values.is_active}
-                  className="w-5 h-5 "
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn1 btn-primary1 w-full  "
-                // onClick={handleSubmit}
-              >
-                Submit
-              </button>
-            </Form>
-          )}
-        </Formik>
-      </DialogPanel>
-    </div>
+            </FormBody>
+            <FormFooter
+              onCancel={onClose}
+              submitting={isSubmitting}
+              submitLabel={editing ? "Save changes" : "Save doctor"}
+              error={error}
+            />
+          </Form>
+        )}
+      </Formik>
+    </FormModal>
   );
 }
 
-export default addDoctor;
+export default AddDoctor;

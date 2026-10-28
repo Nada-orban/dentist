@@ -1,67 +1,64 @@
-import React, { useEffect } from "react";
-import DashboardLayout from "../../../components/DashboardLayout";
-import API_URL from "../../api/config";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { FaTrashAlt } from "react-icons/fa";
+import { Dialog } from "@headlessui/react";
+import { FaTrashAlt, FaSearch, FaPlus, FaPhoneAlt, FaRegClock } from "react-icons/fa";
+import DashboardLayout, { PageHeader } from "../../../components/DashboardLayout";
 import ConfirmModal from "../../../components/confirmModel";
+import AddAppointment from "../../../components/addAppointment";
+import API_URL from "../../api/config";
+import {
+  fmtTime,
+  dateParts,
+  dayStatus,
+  byDateTime,
+  STATUS_STYLE,
+  STATUS_LABEL,
+} from "../../../utils/dashboard";
 
 const domain = `${API_URL}`;
 const getReservstionUrl = `${domain}/api/reservation/appointments/`;
 const singleReservstionUrl = `${domain}/api/reservation/appointments/`;
 const getDoctorsUrl = `${domain}/api/doctors/`;
 
-function appointments() {
-  const [reservationsData, setReservationsData] = React.useState([]);
-  const router = useRouter();
-  const [showModal, setShowModal] = React.useState(false);
-  const [selectedDeleteUser, setSelectedDeleteUser] = React.useState(null);
-  const [allDoctors, setAllDoctors] = React.useState([]);
-  const [singleDoctor, setSingleDoctor] = React.useState("");
+const FILTERS = [
+  { key: "all", label: "All" },
+  { key: "today", label: "Today" },
+  { key: "upcoming", label: "Upcoming" },
+  { key: "past", label: "Past" },
+];
+
+function Appointments() {
+  const [reservationsData, setReservationsData] = useState([]);
+  const [allDoctors, setAllDoctors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDeleteUser, setSelectedDeleteUser] = useState(null);
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [addOpen, setAddOpen] = useState(false);
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await axios.get(getReservstionUrl, {
-          headers: {
-            Authorization: localStorage.getItem("Token1"),
-          },
-        });
-
-        console.log("booking Response:", response.data);
-        setReservationsData(response.data); // ✅ Correctly set the response data
-      } catch (error) {
+    const headers = { Authorization: localStorage.getItem("Token1") };
+    axios
+      .get(getReservstionUrl, { headers })
+      .then((res) => setReservationsData(res.data))
+      .catch((error) =>
         console.error(
           "Error fetching reservations:",
           error.response ? error.response.data : error.message
-        );
-      }
-    };
-
-    fetchReservations();
-  }, []);
-  console.log("reservationsData", reservationsData);
-  useEffect(() => {
-    const fetchAllDoctors = async () => {
-      try {
-        const response = await axios.get(getDoctorsUrl, {
-          headers: {
-            Authorization: localStorage.getItem("Token1"),
-          },
-        });
-
-        console.log("Doctors Response:", response.data);
-        setAllDoctors(response.data); // ✅ Correctly set the response data
-      } catch (error) {
+        )
+      )
+      .finally(() => setLoading(false));
+    axios
+      .get(getDoctorsUrl, { headers })
+      .then((res) => setAllDoctors(res.data))
+      .catch((error) =>
         console.error(
           "Error fetching AllDoctors:",
           error.response ? error.response.data : error.message
-        );
-      }
-    };
-
-    fetchAllDoctors();
+        )
+      );
   }, []);
 
   const handleDeleteClick = (user) => {
@@ -71,131 +68,151 @@ function appointments() {
 
   const handleDeleteProject = async () => {
     try {
-      const response = await axios.delete(
-        `${singleReservstionUrl}${selectedDeleteUser.id}/`,
-        {
-          headers: { Authorization: `${localStorage.getItem("Token1")}` }, // Use Bearer for better security
-        }
-      );
-
-      console.log("Item deleted successfully:", response.data);
-
-      // Close modal before reloading
+      await axios.delete(`${singleReservstionUrl}${selectedDeleteUser.id}/`, {
+        headers: { Authorization: `${localStorage.getItem("Token1")}` },
+      });
       setShowModal(false);
-
-      // Reload after a short delay to ensure UI updates
-      setTimeout(() => {
-        window.location.reload();
-      }, 150);
+      setReservationsData((list) => list.filter((r) => r.id !== selectedDeleteUser.id));
     } catch (error) {
-      window.location.reload();
-      console.error(
-        "Error deleting item:",
-        error.response?.data || error.message
-      );
+      console.error("Error deleting item:", error.response?.data || error.message);
+      setShowModal(false);
     }
   };
+
+  const rows = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return [...reservationsData]
+      .sort(byDateTime)
+      .filter((r) => filter === "all" || dayStatus(r.appointment_date) === filter)
+      .filter((r) => {
+        if (!q) return true;
+        const doctor = allDoctors.find((d) => d.id == r.doctor)?.full_name || "";
+        return [r.full_name, r.phone, doctor].some((v) => `${v}`.toLowerCase().includes(q));
+      });
+  }, [reservationsData, allDoctors, query, filter]);
+
   return (
     <DashboardLayout>
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 bg-white shadow-md rounded-xl">
-        <h1 className="text-2xl font-bold text-gray-800">Appointments List</h1>
-        <div className="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
-          <div className="relative w-full md:w-64">
-            <input
-              type="text"
-              placeholder="Search Patients"
-              className="w-full border border-gray-300 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary-color"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-4.35-4.35M16.65 10.5A6.15 6.15 0 1110.5 4.35a6.15 6.15 0 016.15 6.15z"
-              />
-            </svg>
-          </div>
+      <PageHeader
+        eyebrow="Schedule"
+        title="Appointments"
+        subtitle={`${reservationsData.length} booked in total`}
+      >
+        <button
+          type="button"
+          onClick={() => setAddOpen(true)}
+          className="inline-flex items-center gap-2 rounded-full bg-primary-color px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-dark-primary-color"
+        >
+          <FaPlus size={11} /> Add Appointment
+        </button>
+      </PageHeader>
 
-          <button className="bg-main-color  text-white text-sm font-medium px-4 py-2 rounded-full">
-            + Add Appointment
-          </button>
+      <div className="mb-6 flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+        <div className="relative w-full md:w-80">
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-main-color/40" size={13} />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name, phone or doctor"
+            className="w-full rounded-full border border-main-color/15 bg-cream py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary-color focus:ring-2 focus:ring-primary-color/30"
+          />
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => setFilter(f.key)}
+              className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
+                filter === f.key
+                  ? "bg-main-color text-white"
+                  : "bg-main-color/5 text-main-color hover:bg-main-color/10"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
-        {reservationsData.map((reservation) => {
-          const selecteddoctor = allDoctors.find(
-            (doc) => doc.id == reservation.doctor
-          );
-          // setSingleDoctor(doctor);
-          return (
-            <div className="flex items-start justify-between bg-white p-4 gap-4 text-black shadow-md rounded-xl ">
-              <Link
-                href={{
-                  pathname: `/dashboard/appointments/${reservation.id}`,
-                  query: {
-                    reservationId: `${reservation.id}`,
-                  },
-                }}
+
+      {loading ? (
+        <p className="py-12 text-center text-main-color/60">Loading appointments…</p>
+      ) : rows.length === 0 ? (
+        <p className="rounded-2xl bg-white py-12 text-center text-main-color/60 shadow-sm">
+          No appointments found.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          {rows.map((reservation) => {
+            const doctor = allDoctors.find((doc) => doc.id == reservation.doctor);
+            const { day, month, weekday } = dateParts(reservation.appointment_date);
+            const status = dayStatus(reservation.appointment_date);
+            return (
+              <div
                 key={reservation.id}
-                className="no-underline text-black "
+                className="flex items-stretch gap-4 rounded-2xl bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
               >
-                <div>
-                  <div className="flex items-center justify-start gap-1">
-                    <div className="text-md md:text-lg font-semibold">
-                      Name:
-                    </div>
-                    <div>{reservation.full_name}</div>
-                  </div>
-                  <div className="flex items-center justify-start gap-1">
-                    <div className="text-md md:text-lg font-semibold">Age:</div>
-                    <div>{reservation.age}</div>
-                  </div>
-                  <div className="flex items-center justify-start gap-1">
-                    <div className="text-md md:text-lg font-semibold">
-                      doctor:
-                    </div>
-                    <div>{selecteddoctor?.full_name}</div>
-                  </div>
-                  <div className="flex items-center justify-start gap-1">
-                    <div className="text-md md:text-lg font-semibold">
-                      Appointment date:
-                    </div>
-                    <div>{reservation.appointment_date}</div>
-                  </div>
-                  <div className="flex items-center justify-start gap-1">
-                    <div className="text-md md:text-lg font-semibold">
-                      Appointment time:
-                    </div>
-                    <div>{reservation.appointment_time}</div>
-                  </div>
-                  {reservation.message && (
-                    <div className="flex items-center justify-start gap-1">
-                      <div className="text-md md:text-lg font-semibold">
-                        Message:
-                      </div>
-                      <div>{reservation.message}</div>
-                    </div>
-                  )}
+                <div className="flex w-16 shrink-0 flex-col items-center justify-center rounded-xl bg-main-color py-3 text-white">
+                  <span className="text-[10px] uppercase tracking-wider text-white/70">{weekday}</span>
+                  <span className="font-display text-2xl leading-none">{day}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-white/70">{month}</span>
                 </div>
-              </Link>
-              <div>
-                <button onClick={() => handleDeleteClick(reservation)}>
-                  <FaTrashAlt
-                    style={{ width: "20px" }}
-                    className="hover:text-red-500"
-                  />
+
+                <Link
+                  href={{
+                    pathname: `/dashboard/appointments/${reservation.id}`,
+                    query: { reservationId: `${reservation.id}` },
+                  }}
+                  className="min-w-0 flex-1 text-main-color no-underline"
+                >
+                  <div className="mb-1 flex flex-wrap items-center gap-2">
+                    <h3 className="mb-0 truncate font-display text-xl">{reservation.full_name}</h3>
+                    <span className={`rounded-full px-3 py-0.5 text-xs font-medium ${STATUS_STYLE[status]}`}>
+                      {STATUS_LABEL[status]}
+                    </span>
+                  </div>
+                  <p className="mb-1 flex items-center gap-2 text-sm text-main-color/70">
+                    <FaRegClock className="text-primary-color" size={12} />
+                    {fmtTime(reservation.appointment_time)}
+                    {doctor?.full_name && <span>· Dr. {doctor.full_name.replace(/^dr\.?\s+/i, "")}</span>}
+                  </p>
+                  <p className="mb-1 flex items-center gap-2 text-sm text-main-color/70">
+                    <FaPhoneAlt className="text-primary-color" size={11} />
+                    {reservation.phone}
+                    {reservation.age ? <span>· {reservation.age} yrs</span> : null}
+                  </p>
+                  {reservation.message && (
+                    <p className="mb-0 mt-2 truncate rounded-lg bg-cream px-3 py-1.5 text-sm text-main-color/70">
+                      {reservation.message}
+                    </p>
+                  )}
+                </Link>
+
+                <button
+                  type="button"
+                  aria-label={`Delete appointment for ${reservation.full_name}`}
+                  onClick={() => handleDeleteClick(reservation)}
+                  className="h-9 w-9 shrink-0 self-start rounded-full text-main-color/40 transition-colors hover:bg-red-50 hover:text-red-500"
+                >
+                  <FaTrashAlt className="mx-auto" size={14} />
                 </button>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
+
+      <Dialog open={addOpen} onClose={() => setAddOpen(false)} className="relative z-50">
+        <AddAppointment
+          onClose={() => setAddOpen(false)}
+          onSaved={(appointment) => {
+            setReservationsData((list) => [...list, appointment]);
+            setAddOpen(false);
+          }}
+        />
+      </Dialog>
+
       <ConfirmModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -206,4 +223,4 @@ function appointments() {
   );
 }
 
-export default appointments;
+export default Appointments;

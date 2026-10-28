@@ -1,253 +1,193 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { FaArrowLeft, FaPen } from "react-icons/fa";
 import DashboardLayout from "../../../components/DashboardLayout";
 import API_URL from "../../api/config";
-import axios from "axios";
-import { FaTrashAlt } from "react-icons/fa";
-import { MdModeEdit } from "react-icons/md";
-import { useRouter } from "next/router";
+import { fmtTime, dayStatus, STATUS_STYLE, STATUS_LABEL } from "../../../utils/dashboard";
 
 const domain = `${API_URL}`;
 const singleReservstionUrl = `${domain}/api/reservation/appointments/`;
 
+const FIELDS = [
+  { key: "full_name", label: "Patient name", type: "text" },
+  { key: "age", label: "Age", type: "number" },
+  { key: "phone", label: "Phone", type: "text" },
+  { key: "email", label: "Email", type: "email" },
+  { key: "appointment_date", label: "Date", type: "date" },
+  { key: "appointment_time", label: "Time", type: "time" },
+];
+
+const inputClass =
+  "w-full rounded-xl border border-main-color/15 bg-cream px-4 py-2.5 text-sm outline-none focus:border-primary-color focus:ring-2 focus:ring-primary-color/30";
+
 function Appointment() {
   const router = useRouter();
-  const { reservationId } = router.query;
-  const [reservation_Id, setReservation_Id] = useState("");
-  const [reservationData, setReservationData] = useState("");
-  const [editReservationData, setEditReservationData] = useState("");
+  // Works from the list link (?reservationId=) and from the address itself (/appointments/3)
+  const reservationId = router.query.reservationId || router.query.index;
+  const [reservationData, setReservationData] = useState(null);
+  const [edit, setEdit] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("");
+  const [status, setStatus] = useState("loading"); // loading | ready | missing
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  // useEffect(() => {
-  //   if (reservationId) {
-  //     setReservation_Id(reservationId);
-  //   }
-  // }, [reservationId]);
-  console.log("reservationId", reservationId);
   useEffect(() => {
     if (!reservationId) return;
-    try {
-      if (reservationId != 0) {
-        axios
-          .get(`${singleReservstionUrl}${reservationId}/`, {
-            headers: {
-              Authorization: localStorage.getItem("Token1"),
-            },
-          })
-          .then((res) => {
-            console.log("res", res.data);
-            setReservationData(res.data);
-          });
-      }
-    } catch (error) {
-      console.error(
-        "Error fetching reservations:",
-        error.response ? error.response.data : error.message
-      );
-    }
+    axios
+      .get(`${singleReservstionUrl}${reservationId}/`, {
+        headers: { Authorization: localStorage.getItem("Token1") },
+      })
+      .then((res) => {
+        setReservationData(res.data);
+        setStatus("ready");
+      })
+      .catch(() => setStatus("missing"));
   }, [reservationId]);
 
-  useEffect(() => {
-    if (reservationData) {
-      setEditReservationData({
-        full_name: reservationData.full_name,
-        phone: reservationData.phone,
-        age: reservationData.age,
-        appointment_date: reservationData.appointment_date,
-        appointment_time: reservationData.appointment_time,
-        email: reservationData.email,
-        message: reservationData.message,
-      });
-    }
-  }, [reservationData]);
+  const startEdit = () => {
+    setEdit({
+      full_name: reservationData.full_name || "",
+      phone: reservationData.phone || "",
+      age: reservationData.age ?? "",
+      appointment_date: reservationData.appointment_date || "",
+      appointment_time: reservationData.appointment_time || "",
+      email: reservationData.email || "",
+      message: reservationData.message || "",
+    });
+    setError("");
+    setEditMode(true);
+  };
 
-  const handleEdit = async () => {
-    console.log("editReservationData", editReservationData);
+  const handleSave = async () => {
+    setSaving(true);
+    setError("");
     try {
-      const response = await axios.patch(
-        `${singleReservstionUrl}${reservationId}/`,
-        editReservationData,
-        {
-          headers: { Authorization: localStorage.getItem("Token1") },
-        }
-      );
-
-      setEditReservationData(response.data);
+      const payload = { ...edit, age: edit.age === "" ? null : edit.age, email: edit.email || null };
+      const response = await axios.patch(`${singleReservstionUrl}${reservationId}/`, payload, {
+        headers: { Authorization: localStorage.getItem("Token1") },
+      });
+      setReservationData(response.data);
       setEditMode(false);
-    } catch (error) {
-      console.error(
-        "Error updating reservation:",
-        error.response ? error.response.data : error.message
+    } catch (err) {
+      const data = err.response?.data;
+      setError(
+        data && typeof data === "object"
+          ? Object.values(data).flat().join(" ")
+          : "Could not save the changes. Please try again."
       );
+    } finally {
+      setSaving(false);
     }
   };
+
+  const shownStatus = reservationData ? dayStatus(reservationData.appointment_date) : null;
+  const display = {
+    appointment_time: fmtTime(reservationData?.appointment_time),
+  };
+
   return (
     <DashboardLayout>
-      <div
-        // key={reservation.id}
-        className=" flex items-start justify-between  w-full mt-5  p-10  rounded-lg "
+      <Link
+        href="/dashboard/appointments"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-main-color/70 no-underline hover:text-primary-color"
       >
-        <div className="w-3/4">
-          <div className=" flexInfoBox">
-            <div className="text-md md:text-lg font-semibold">Name:</div>
-            {editMode ? (
-              <input
-                type="text"
-                value={editReservationData?.full_name}
-                onChange={(e) =>
-                  setEditReservationData({
-                    ...editReservationData,
-                    full_name: e.target.value,
-                  })
-                }
-                className="border p-2 rounded-md w-full"
-              />
-            ) : (
-              <div className="infobBox">{reservationData?.full_name}</div>
-            )}
-          </div>
-          <div className="flexInfoBox">
-            <div className="text-md md:text-lg font-semibold">Age:</div>
-            {editMode ? (
-              <input
-                type="text"
-                value={editReservationData?.age}
-                onChange={(e) =>
-                  setEditReservationData({
-                    ...editReservationData,
-                    age: e.target.value,
-                  })
-                }
-                className="border p-2 rounded-md w-full"
-              />
-            ) : (
-              <div className="infobBox">{reservationData?.age}</div>
-            )}
-          </div>
-          <div className="flexInfoBox">
-            <div className="text-md md:text-lg font-semibold">
-              Appointment date:
+        <FaArrowLeft size={11} /> All appointments
+      </Link>
+
+      {status === "loading" && <p className="text-main-color/60">Loading…</p>}
+      {status === "missing" && (
+        <p className="rounded-2xl bg-white py-12 text-center text-main-color/60 shadow-sm">
+          This appointment could not be found.
+        </p>
+      )}
+
+      {status === "ready" && (
+        <div className="max-w-3xl rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+          <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-main-color/10 pb-6">
+            <div>
+              <p className="eyebrow mb-2">Appointment</p>
+              <h1 className="mb-2 text-3xl text-main-color">{reservationData.full_name}</h1>
+              <span className={`rounded-full px-3 py-0.5 text-xs font-medium ${STATUS_STYLE[shownStatus]}`}>
+                {STATUS_LABEL[shownStatus]}
+              </span>
             </div>
-            {editMode ? (
-              <input
-                type="date"
-                value={editReservationData?.appointment_date}
-                onChange={(e) =>
-                  setEditReservationData({
-                    ...editReservationData,
-                    appointment_date: e.target.value,
-                  })
-                }
-                className="border p-2 rounded-md w-full"
-              />
-            ) : (
-              <div className="infobBox">
-                {reservationData?.appointment_date}
+            {!editMode && (
+              <button
+                type="button"
+                onClick={startEdit}
+                className="inline-flex items-center gap-2 rounded-full border border-main-color/20 px-5 py-2 text-sm text-main-color transition-colors hover:border-primary-color hover:text-primary-color"
+              >
+                <FaPen size={11} /> Edit
+              </button>
+            )}
+          </div>
+
+          <dl className="mb-0 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2">
+            {FIELDS.map(({ key, label, type }) => (
+              <div key={key}>
+                <dt className="mb-1 text-[10px] uppercase tracking-[0.2em] text-main-color/50">{label}</dt>
+                <dd className="mb-0">
+                  {editMode ? (
+                    <input
+                      type={type}
+                      value={edit[key]}
+                      onChange={(e) => setEdit({ ...edit, [key]: e.target.value })}
+                      className={inputClass}
+                    />
+                  ) : (
+                    <span className="text-main-color">
+                      {(key === "appointment_time" ? display.appointment_time : reservationData[key]) || "—"}
+                    </span>
+                  )}
+                </dd>
               </div>
-            )}
-          </div>
-          <div className="flexInfoBox">
-            <div className="text-md md:text-lg font-semibold">
-              Appointment time:
+            ))}
+            <div className="sm:col-span-2">
+              <dt className="mb-1 text-[10px] uppercase tracking-[0.2em] text-main-color/50">Message</dt>
+              <dd className="mb-0">
+                {editMode ? (
+                  <textarea
+                    rows={3}
+                    value={edit.message}
+                    onChange={(e) => setEdit({ ...edit, message: e.target.value })}
+                    className={inputClass}
+                  />
+                ) : (
+                  <span className="text-main-color">{reservationData.message || "—"}</span>
+                )}
+              </dd>
             </div>
-            {editMode ? (
-              <input
-                type="time"
-                value={editReservationData?.appointment_time}
-                onChange={(e) =>
-                  setEditReservationData({
-                    ...editReservationData,
-                    appointment_time: e.target.value,
-                  })
-                }
-                className="border p-2 rounded-md w-full"
-              />
-            ) : (
-              <div className="infobBox">
-                {reservationData?.appointment_time}
-              </div>
-            )}
-          </div>
+          </dl>
 
-          <div className="flexInfoBox">
-            <div className="text-md md:text-lg font-semibold">Message:</div>
-            {editMode ? (
-              <input
-                type="text"
-                value={editReservationData?.message}
-                onChange={(e) =>
-                  setEditReservationData({
-                    ...editReservationData,
-                    message: e.target.value,
-                  })
-                }
-                className="border p-2 rounded-md w-full"
-              />
-            ) : (
-              <div className="infobBox">{reservationData?.message}</div>
-            )}
-          </div>
-        </div>
-        <div className="flex items-center justify-end gap-1">
-          {!editMode ? (
-            <div className="btn " onClick={() => setEditMode(true)}>
-              <MdModeEdit
-                style={{ width: "20px" }}
-                className="hover:text-primary-color"
-              />
-              {/* edit */}
-            </div>
-          ) : (
-            <div
-              className="btn1 btn-primary1"
-              onClick={async () => {
-                try {
-                  // 1) Update the reservation data
-                  await handleEdit();
+          {error && (
+            <p className="mb-0 mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </p>
+          )}
 
-                  // 3) Exit edit mode
-                  setEditMode(false);
-
-                  // 4) Finally, refresh the page
-                  window.location.reload();
-                } catch (error) {
-                  console.error(error);
-                }
-              }}
-            >
-              {" "}
-              save
+          {editMode && (
+            <div className="mt-8 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setEditMode(false)}
+                className="rounded-full border border-main-color/20 px-6 py-2.5 text-sm text-main-color hover:bg-cream"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={handleSave}
+                className="rounded-full bg-primary-color px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-dark-primary-color disabled:opacity-60"
+              >
+                {saving ? "Saving…" : "Save changes"}
+              </button>
             </div>
           )}
-          {/* <button
-            onClick={async () => {
-              try {
-                // 1) Update the reservation data
-                await handleEdit();
-
-                // 3) Exit edit mode
-                setEditMode(false);
-
-                // 4) Finally, refresh the page
-                // window.location.reload();
-              } catch (error) {
-                console.error(error);
-              }
-            }}
-          >
-            <MdModeEdit
-              style={{ width: "20px" }}
-              className="hover:text-primary-color"
-            />
-          </button> */}
-          {/* <button onClick={() => handleDeleteClick(reservationId)}>
-            <FaTrashAlt
-              style={{ width: "20px" }}
-              className="hover:text-red-500"
-            />
-          </button> */}
         </div>
-      </div>
+      )}
     </DashboardLayout>
   );
 }

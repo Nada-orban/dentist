@@ -1,30 +1,31 @@
 import React from "react";
-import { IoClose } from "react-icons/io5";
-import { Tabs, Tab, Form, Row, Col, Modal, Button } from "react-bootstrap";
+import { FaTrashAlt } from "react-icons/fa";
+import { Modal } from "react-bootstrap";
 
 export const ConfirmModal = ({ show, onHide, onConfirm, message }) => {
   return (
-    <Modal show={show} onHide={onHide}>
-      <div className="">
-        <div className="flex justify-between items-start pt-4 pb-1 border-b-2 border-white px-3 ">
-          <h5 className="">Confirm Deletion:</h5>
-          <IoClose
-            style={{ width: "30px", height: "20px" }}
-            onClick={onHide}
-            className="cursor-pointer"
-          />
+    <Modal show={show} onHide={onHide} centered contentClassName="border-0 rounded-3xl overflow-hidden">
+      <div className="p-7 text-center">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-500">
+          <FaTrashAlt size={20} />
         </div>
-
-        <div className="py-3 pb-5 px-3">
-          <p className="pb-2">{message}</p>
-          <div className="flex justify-end items-center gap-2">
-            <button variant="secondary" className="" onClick={onHide}>
-              Cancel
-            </button>
-            <button className="btn1 btn-primary1" onClick={onConfirm}>
-              Delete
-            </button>
-          </div>
+        <h5 className="mb-2 font-display text-2xl text-main-color">Confirm deletion</h5>
+        <p className="mb-6 text-sm text-main-color/70">{message}</p>
+        <div className="flex justify-center gap-3">
+          <button
+            type="button"
+            className="rounded-full border border-main-color/20 px-6 py-2.5 text-sm text-main-color transition-colors hover:bg-cream"
+            onClick={onHide}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="rounded-full bg-red-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-600"
+            onClick={onConfirm}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </Modal>

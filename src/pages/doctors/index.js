@@ -379,8 +379,7 @@ function Doctors() {
             <DoctorCard
               key={doctor.id}
               doctor={doctor}
-              // handleDeleteClick={handleDeleteClick}
-              handleEditDoctor={() => handleEditDoctor(doctor)}
+              handleDeleteClick={handleDeleteClick}
             />
           ))}
         </div>
@@ -390,7 +389,7 @@ function Doctors() {
         onClose={() => setIsOpen(false)}
         className="relative z-50 overflow-y-auto"
       >
-        <AddDoctor />
+        <AddDoctor onClose={() => setIsOpen(false)} />
       </Dialog>
       <ConfirmModal
         show={showModal}

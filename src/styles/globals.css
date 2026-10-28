@@ -115,3 +115,9 @@ h2 {
   font-style: italic;
   @apply text-primary-color;
 }
+
+/* One shared side spacing (20px) for every .container, so the navbar and the
+   page content line up. Bootstrap's own padding (12px) was winning over Tailwind's. */
+.container {
+  --bs-gutter-x: 2.5rem !important;
+}
