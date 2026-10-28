@@ -114,8 +114,8 @@ export default function Example() {
                 light
                   ? "relative h-9 sm:h-7 w-auto mr-2.5"
                   : dark
-                    ? "relative h-9 w-auto mr-2.5 sm:mr-3"
-                    : "relative h-9 w-auto mr-2.5 sm:mr-0 sm:absolute sm:left-0 sm:top-1/2 sm:-translate-y-1/2 sm:opacity-45 sm:h-16 lg:h-20"
+                    ? "relative h-8 xl:h-9 w-auto mr-2.5 sm:mr-3"
+                    : "relative h-9 w-auto mr-2.5 sm:mr-0 sm:absolute sm:left-0 sm:top-1/2 sm:-translate-y-1/2 sm:opacity-45 sm:h-14 xl:h-20"
               }
             />
             <img
@@ -125,8 +125,8 @@ export default function Example() {
                 light
                   ? "h-7 sm:h-6 "
                   : dark
-                    ? "h-7 sm:h-9"
-                    : "h-7 sm:h-12 lg:h-14"
+                    ? "h-7 sm:h-8 xl:h-9"
+                    : "h-7 sm:h-11 xl:h-14"
               }`}
             />
           </a>
@@ -144,7 +144,7 @@ export default function Example() {
           <div
             className={`flex items-center transition-all duration-300 ${light ? "py-0" : dark ? "py-3" : "py-5"}`}
           >
-            <PopoverGroup className="hidden lg:flex lg:gap-x-10">
+            <PopoverGroup className="hidden lg:flex lg:gap-x-6 xl:gap-x-10">
               <a
                 href=""
                 className="text-base font-normal leading-6 text-inherit no-underline"
@@ -221,7 +221,7 @@ export default function Example() {
             </PopoverGroup>
             <Link
               href="/booking"
-              className={`ms-10 rounded-full border px-5 py-1.5 text-base no-underline transition-colors  ${
+              className={`ms-6 xl:ms-10 rounded-full border px-5 py-1.5 text-base no-underline transition-colors  ${
                 light
                   ? "border-primary-color bg-primary-color text-white hover:bg-dark-primary-color"
                   : "border-primary-color text-white hover:bg-dark-primary-color hover:text-main-color"

@@ -7,6 +7,7 @@ import { MdDashboard } from "react-icons/md";
 import {
   FaRegCalendarAlt,
   FaUserFriends,
+  FaUserMd,
   FaRegUser,
   FaCog,
   FaSignOutAlt,
@@ -27,6 +28,7 @@ const navItems = [
     icon: FaRegCalendarAlt,
   },
   { label: "Patients", href: "/dashboard/patient", icon: FaUserFriends },
+  { label: "Doctors", href: "/dashboard/doctors", icon: FaUserMd },
   { label: "Profile", href: "/dashboard/messages", icon: FaRegUser },
   { label: "Settings", href: "/dashboard/settings", icon: FaCog },
 ];

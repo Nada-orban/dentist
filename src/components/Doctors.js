@@ -1,84 +1,55 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import doctor from "../../public/images/Doctors/file.png";
-import API_URL from "../pages/api/config";
-import axios, { all } from "axios";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import axios from "axios";
+import { FaArrowRight } from "react-icons/fa";
+import API_URL from "../pages/api/config";
+import DoctorPublicCard from "./DoctorPublicCard";
 
-const domain = `${API_URL}`;
-const getDoctorsUrl = `${domain}/api/doctors/`;
-const addDoctorUrl = `${domain}/api/doctors/create/`;
-const editDoctorUrl = `${domain}/api/doctors/`;
-const deleteDoctorUrl = `${domain}/api/doctors/`;
+const getDoctorsUrl = `${API_URL}/api/doctors/`;
 
+// "Meet Our Doctors" section on the home page.
 function Doctors() {
-  const [allDoctors, setAllDoctors] = React.useState([]);
-  const [singleDoctor, setSingleDoctor] = React.useState("");
-  const [showModal, setShowModal] = React.useState(false);
-  const [selectedDeleteUser, setSelectedDeleteUser] = React.useState(null);
-  let [isOpen, setIsOpen] = useState(false);
+  const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    const fetchAllDoctors = async () => {
-      try {
-        const response = await axios.get(getDoctorsUrl, {
-          headers: {
-            Authorization: undefined,
-          },
-        });
-
-        console.log("API Response:", response.data);
-        setAllDoctors(response.data); // ✅ Correctly set the response data
-      } catch (error) {
-        console.error(
-          "Error fetching AllDoctors:",
-          error.response ? error.response.data : error.message,
-        );
-      }
-    };
-
-    fetchAllDoctors();
+    axios
+      .get(getDoctorsUrl)
+      .then((res) => setDoctors(res.data.filter((d) => d.is_active !== false)))
+      .catch((error) =>
+        console.error("Error fetching doctors:", error.response ? error.response.data : error.message)
+      );
   }, []);
 
+  // Nothing to show (or server unreachable): don't leave an empty section.
+  if (!doctors.length) return null;
+
   return (
-    <div className="bg-white py-20">
-      <div className="container mx-auto px-6">
-        <p className="eyebrow mb-3">Our Team</p>
-        <h2 className="text-4xl mb-10">
-          Meet Our <span className="serif-em">Doctors</span>
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-4 md:mx-auto ">
-          {allDoctors?.map((doctor) => {
-            return (
-              <div key={doctor.id}>
-                {doctor.profile_image ? (
-                  <img
-                    src={doctor.profile_image}
-                    alt={doctor.full_name}
-                    className="rounded-2xl h-[333px] w-full object-cover"
-                  />
-                ) : (
-                  <div className="rounded-2xl h-[333px] w-full bg-cream flex items-center justify-center font-display text-6xl text-primary-color">
-                    {doctor.full_name?.charAt(0)}
-                  </div>
-                )}
-                <div className="mt-3">
-                  <h3 className="font-bold">{doctor.full_name}</h3>
-                  <p className="text-gray-500">{doctor.specialization}</p>
-                </div>
-              </div>
-            );
-          })}
+    <section className="bg-white py-20">
+      <div className="container mx-auto">
+        <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="eyebrow mb-3">Our Team</p>
+            <h2 className="mb-0 text-4xl">
+              Meet Our <span className="serif-em">Doctors</span>
+            </h2>
+          </div>
+          <Link
+            href="/doctors"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-primary-color no-underline hover:text-dark-primary-color"
+          >
+            View all doctors
+            <FaArrowRight size={11} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-6">
+          {doctors.slice(0, 3).map((doctor) => (
+            <div key={doctor.id} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"><DoctorPublicCard doctor={doctor} compact /></div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
